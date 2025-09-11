@@ -57,7 +57,7 @@ fun MainScreen(innerPadding: PaddingValues, pieces: Map<Int, Int>) {
             .padding(innerPadding),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        TopPanel()
+        TopPanel("Checkers")
         GameBoard(pieces = pieces)
         ButtonPanel()
     }

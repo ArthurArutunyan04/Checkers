@@ -9,12 +9,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.checkers.ui.theme.Colus
 import com.example.checkers.ui.theme.Field
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
 @Composable
-fun JitterButton(
+fun AnimatedButton(
     text: String,
     icon: ImageVector,
     onClick: () -> Unit,
@@ -53,7 +54,7 @@ fun JitterButton(
     ) {
         Column(
             modifier = Modifier
-                .width(90.dp)
+                .width(110.dp)
                 .height(80.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -86,8 +87,10 @@ fun JitterButton(
             ) {
                 Text(
                     text = text,
-                    fontSize = 14.sp,
-                    color = Color.White
+                    fontFamily = Colus,
+                    fontSize = 13.sp,
+                    color = Color.White,
+                    modifier = Modifier.rotate(-textAngle)
                 )
             }
         }

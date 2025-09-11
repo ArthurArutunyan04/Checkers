@@ -1,13 +1,11 @@
 package com.example.checkers.ui.theme
 
-import JitterButton
+import AnimatedButton
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,24 +15,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.SegmentedButtonDefaults.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -44,10 +34,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.checkers.GameActivity
+import org.w3c.dom.Text
 
 
 @Composable
-fun TopPanel() {
+fun TopPanel(title: String) {
     val view = LocalView.current
     val window = (view.context as? android.app.Activity)?.window
     val statusBarColor = 0xFF2E211C.toInt()
@@ -66,10 +57,11 @@ fun TopPanel() {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "Checkers",
+            text = title,
             color = Color(0xFFFFFFFF),
-            fontSize = 48.sp,
-            fontWeight = FontWeight.Bold
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = Colus
         )
     }
 }
@@ -142,7 +134,7 @@ fun ButtonPanel() {
             .padding(16.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        JitterButton(
+        AnimatedButton(
             text = "Играть",
             icon = Icons.Filled.PlayArrow,
             onClick = {
@@ -153,14 +145,14 @@ fun ButtonPanel() {
             startDelay = 0L
         )
 
-        JitterButton(
+        AnimatedButton(
             text = "Настройки",
             icon = Icons.Filled.Settings,
             onClick = { /* TODO: Settings */ },
             startDelay = 500L
         )
 
-        JitterButton(
+        AnimatedButton(
             text = "Меню",
             icon = Icons.Filled.Menu,
             onClick = { /* TODO: Menu */ },

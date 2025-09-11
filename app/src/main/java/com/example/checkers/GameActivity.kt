@@ -49,7 +49,7 @@ fun GameScreen(innerPadding: PaddingValues, pieces: Map<Int, Int>) {
             .padding(innerPadding),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        TopPanel()
+        TopPanel("Сложный")
         GameBoard(pieces = pieces)
         Spacer(modifier = Modifier.height(80.dp))
     }
