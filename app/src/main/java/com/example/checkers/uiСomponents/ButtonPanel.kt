@@ -46,7 +46,6 @@ fun ButtonPanel() {
             text = "Играть",
             icon = Icons.Filled.PlayArrow,
             onClick = {
-                println("Играть нажато!")
                 val intent = Intent(context, GameActivity::class.java)
                 context.startActivity(intent)
             },
