@@ -1,4 +1,4 @@
-package com.example.checkers
+package com.example.checkers.activities
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,9 +13,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.checkers.ui.theme.CheckersTheme
-import com.example.checkers.ui.theme.GameBoard
-import com.example.checkers.ui.theme.TopPanel
-import com.example.checkers.ui.theme.generateStandardSetup
+import com.example.checkers.uiСomponents.GameBoard
+import com.example.checkers.uiСomponents.TopPanel
+import com.example.checkers.gamelogic.generateStandardSetup
 
 class GameActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

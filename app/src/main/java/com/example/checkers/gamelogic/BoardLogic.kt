@@ -1,4 +1,4 @@
-package com.example.checkers.ui.theme
+package com.example.checkers.gamelogic
 
 import com.example.checkers.R
 import kotlin.random.Random
