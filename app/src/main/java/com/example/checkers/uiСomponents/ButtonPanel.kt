@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
@@ -20,6 +21,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.checkers.activities.GameActivity
+import com.example.checkers.activities.StateActivity
 
 @Composable
 fun ButtonPanel() {
@@ -53,17 +55,20 @@ fun ButtonPanel() {
         )
 
         AnimatedButton(
+            text = "Статистика",
+            icon = Icons.Filled.Info,
+            onClick = {
+                val intent = Intent(context, StateActivity::class.java)
+                context.startActivity(intent)
+            },
+            startDelay = 1000L
+        )
+
+        AnimatedButton(
             text = "Настройки",
             icon = Icons.Filled.Settings,
             onClick = { /* TODO: Settings */ },
             startDelay = 500L
-        )
-
-        AnimatedButton(
-            text = "Меню",
-            icon = Icons.Filled.Menu,
-            onClick = { /* TODO: Menu */ },
-            startDelay = 1000L
         )
     }
 }

@@ -33,6 +33,12 @@
             android:exported="false"
             android:theme="@style/Theme.Checkers" />
 
+        <activity
+            android:name=".activities.StateActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Checkers" />
+
+
 
     </application>
 
