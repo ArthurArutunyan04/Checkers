@@ -70,12 +70,12 @@ fun GameScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Игра окончена!",
+                        text = "Игра окончена",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "Победитель: ${gameState.winner.value?.displayName ?: "Ничья"}",
+                        text = "Победа ${gameState.winner.value?.displayName ?: "Ничья"}",
                         style = MaterialTheme.typography.bodyLarge,
                         textAlign = TextAlign.Center
                     )

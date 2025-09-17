@@ -4,6 +4,24 @@ import com.example.checkers.R
 import kotlin.math.abs
 
 object GameLogic {
+    fun indexToChessNotation(index: Int): String {
+        val row = 8 - (index / 8)
+        val col = 'A' + (index % 8)
+        return "$col$row"
+    }
+
+    fun chessNotationToIndex(notation: String): Int {
+        if (notation.length != 2) return -1
+        val colChar = notation[0].uppercaseChar()
+        val rowChar = notation[1]
+
+        if (colChar !in 'A'..'H' || rowChar !in '1'..'8') return -1
+
+        val col = colChar - 'A'
+        val row = 8 - (rowChar - '0')
+        return row * 8 + col
+    }
+
     fun getPieceColor(res: Int): PlayerColor? {
         return when (res) {
             R.drawable.white_def, R.drawable.white_win -> PlayerColor.WHITE
@@ -215,8 +233,11 @@ object GameLogic {
         val toCol = toIndex % 8
 
         val pieceColor = getPieceColor(piece) ?: return false
-        val colorName = if (pieceColor == PlayerColor.WHITE) "Белые" else "Чёрные"
-        state.addLog("$colorName: $fromIndex → $toIndex${if (isCapture) " (удаление)" else ""}")
+        val colorName = if (pieceColor == PlayerColor.WHITE) "Силы Света" else "Силы Тьмы"
+
+        val fromNotation = indexToChessNotation(fromIndex)
+        val toNotation = indexToChessNotation(toIndex)
+        state.addLog("$colorName: $fromNotation → $toNotation${if (isCapture) " (удаление)" else ""}")
 
         state.board[toIndex] = piece
         state.board.remove(fromIndex)
@@ -235,6 +256,8 @@ object GameLogic {
                     val midColor = getPieceColor(currentPiece)
                     if (midColor != pieceColor) {
                         state.board.remove(currentIndex)
+                        val capturedNotation = indexToChessNotation(currentIndex)
+                        state.addLog("Взята фигура на $capturedNotation")
                         break
                     }
                 }
@@ -247,7 +270,7 @@ object GameLogic {
         val wasKing = piece == R.drawable.white_win || piece == R.drawable.black_win
         if (!wasKing && ((isWhite && toRow == 0) || (!isWhite && toRow == 7))) {
             state.board[toIndex] = if (isWhite) R.drawable.white_win else R.drawable.black_win
-            state.addLog("$colorName фигура на $toIndex стала дамкой")
+            state.addLog("$colorName крип-мечник на $toNotation стал крипом-дальником")
         }
 
         if (isCapture) {
@@ -266,34 +289,6 @@ object GameLogic {
         return true
     }
 
-    fun aiMove(state: GameState) {
-        if (state.selectedDifficulty == Difficulty.DUEL || state.gameOver.value) return
-
-        val aiColor = if (state.playerColor == PlayerColor.WHITE) PlayerColor.BLACK else PlayerColor.WHITE
-        val aiPieces = state.board.filterKeys { index ->
-            getPieceColor(state.board[index] ?: 0) == aiColor
-        }.keys
-
-        val hasCaptures = hasMandatoryCaptures(state)
-
-        var captureMoves = mutableListOf<Pair<Int, Int>>()
-        var simpleMoves = mutableListOf<Pair<Int, Int>>()
-
-        for (from in aiPieces) {
-            val moves = getPossibleMoves(state, from)
-            val captures = moves.filter { abs((it / 8) - (from / 8)) >= 2 }
-            val simples = moves.filter { abs((it / 8) - (from / 8)) == 1 }
-            captureMoves.addAll(captures.map { from to it })
-            if (!hasCaptures) simpleMoves.addAll(simples.map { from to it })
-        }
-
-        val chosenMoves = if (captureMoves.isNotEmpty()) captureMoves else simpleMoves
-        if (chosenMoves.isNotEmpty()) {
-            val (from, to) = chosenMoves.random()
-            performMove(state, from, to)
-        }
-    }
-
     private fun checkWinCondition(state: GameState) {
         val whitePieces = state.board.values.count { getPieceColor(it) == PlayerColor.WHITE }
         val blackPieces = state.board.values.count { getPieceColor(it) == PlayerColor.BLACK }
@@ -301,11 +296,15 @@ object GameLogic {
         if (whitePieces == 0) {
             state.winner.value = PlayerColor.BLACK
             state.gameOver.value = true
-            state.addLog("Чёрные победили!")
+            state.addLog("Победа Сил Тьмы")
         } else if (blackPieces == 0) {
             state.winner.value = PlayerColor.WHITE
             state.gameOver.value = true
-            state.addLog("Белые победили!")
+            state.addLog("Победа Сил Света")
         }
+    }
+
+    fun aiMove(state: GameState) {
+        /*TODO*/
     }
 }

@@ -28,6 +28,8 @@ import com.example.checkers.gamelogic.GameLogic
 import com.example.checkers.gamelogic.GameState
 import com.example.checkers.gamelogic.PlayerColor
 import com.example.checkers.ui.theme.CheckersTheme
+import com.example.checkers.uiСomponents.ColorDialog
+import com.example.checkers.uiСomponents.CustomDifficultyDialog
 import com.example.checkers.uiСomponents.GameScreen
 import kotlinx.coroutines.launch
 
@@ -113,107 +115,4 @@ class GameActivity : ComponentActivity() {
             println("Selected piece at $index")
         }
     }
-}
-
-@Composable
-fun CustomDifficultyDialog(onSelect: (Difficulty) -> Unit, onDismiss: () -> Unit) {
-    AnimatedVisibility(
-        visible = true,
-        enter = fadeIn(),
-        exit = fadeOut()
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.5f))
-                .wrapContentSize(Alignment.Center)
-        ) {
-            Card(
-                modifier = Modifier
-                    .width(300.dp)
-                    .padding(16.dp),
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .background(Color.White)
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = "Выберите уровень сложности",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black,
-                        modifier = Modifier.padding(bottom = 16.dp)
-                    )
-                    Difficulty.values().forEach { difficulty ->
-                        val buttonColor = when (difficulty) {
-                            Difficulty.EASY -> Color(0xFF4CAF50)
-                            Difficulty.MEDIUM -> Color(0xFFFFCA28)
-                            Difficulty.HARD -> Color(0xFFE57373)
-                            Difficulty.DUEL -> Color(0xFF2196F3)
-                        }
-                        Button(
-                            onClick = { onSelect(difficulty) },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 4.dp),
-                            shape = RoundedCornerShape(8.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = buttonColor,
-                                contentColor = Color.White
-                            )
-                        ) {
-                            Text(
-                                text = difficulty.displayName,
-                                fontSize = 16.sp
-                            )
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Button(
-                        onClick = onDismiss,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
-                        shape = RoundedCornerShape(8.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF757575),
-                            contentColor = Color.White
-                        )
-                    ) {
-                        Text(
-                            text = "Отмена",
-                            fontSize = 16.sp
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Выберите цвет фигур") },
-        text = {
-            Column {
-                PlayerColor.values().forEach { color ->
-                    TextButton(
-                        onClick = { onSelect(color) },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(color.displayName)
-                    }
-                }
-            }
-        },
-        confirmButton = {},
-        dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Отмена") }
-        }
-    )
 }

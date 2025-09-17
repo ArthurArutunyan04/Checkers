@@ -27,13 +27,13 @@ data class GameState(
             board[index] = res
         }
         historyLog.clear()
-        historyLog.add("Ход белых")
+        historyLog.add("Ход Сил Света")
     }
 
     fun switchPlayer() {
         currentPlayer = if (currentPlayer == PlayerColor.WHITE) PlayerColor.BLACK else PlayerColor.WHITE
         isAiTurn = (currentPlayer != playerColor) && (selectedDifficulty != Difficulty.DUEL)
-        historyLog.add("Ход ${if (currentPlayer == PlayerColor.WHITE) "белых" else "чёрных"}")
+        historyLog.add("Ход ${if (currentPlayer == PlayerColor.WHITE) "Сил Света" else "Сил Тьмы"}")
     }
 
     fun isValidCell(index: Int): Boolean {
