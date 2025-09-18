@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.checkers.gamelogic.GameLogic
 import com.example.checkers.gamelogic.GameState
 
@@ -20,9 +21,13 @@ import com.example.checkers.gamelogic.GameState
 fun GameScreen(
     innerPadding: PaddingValues,
     gameState: GameState,
-    onCellClick: (Int) -> Unit
+    onCellClick: (Int) -> Unit,
+    onPause: () -> Unit,
+    onResume: () -> Unit,
+    onExit: () -> Unit,
+    showTopPanel: Boolean = true
 ) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(
@@ -34,55 +39,109 @@ fun GameScreen(
                     radius = 800f
                 )
             )
-            .padding(innerPadding),
-        verticalArrangement = Arrangement.SpaceBetween
+            .padding(innerPadding)
     ) {
-        TopPanel(
-            title = "${gameState.selectedDifficulty.displayName}"
-        )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            if (showTopPanel) {
+                TopPanel(
+                    title = "${gameState.selectedDifficulty.displayName}",
+                    onClick = onPause
+                )
+            }
 
-        val possibleMoves = remember(gameState.selectedCell, gameState.gameOver.value, gameState.board) {
-            if (gameState.selectedCell != null && !gameState.gameOver.value) {
-                GameLogic.getPossibleMoves(gameState, gameState.selectedCell!!)
+            val possibleMoves = remember(gameState.selectedCell, gameState.gameOver.value, gameState.board) {
+                if (gameState.selectedCell != null && !gameState.gameOver.value) {
+                    GameLogic.getPossibleMoves(gameState, gameState.selectedCell!!)
+                } else {
+                    emptyList()
+                }
+            }
+
+            GameBoard(
+                pieces = gameState.board,
+                onCellClick = onCellClick,
+                selectedCell = gameState.selectedCell,
+                isGameOver = gameState.gameOver.value,
+                possibleMoves = possibleMoves
+            )
+
+            if (gameState.gameOver.value) {
+                Spacer(modifier = Modifier.height(80.dp))
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "Игра окончена",
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "Победа ${gameState.winner.value?.displayName ?: "Ничья"}",
+                            style = MaterialTheme.typography.bodyLarge,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
             } else {
-                emptyList()
+                BottomGamePanel(gameState = gameState)
             }
         }
 
-        GameBoard(
-            pieces = gameState.board,
-            onCellClick = onCellClick,
-            selectedCell = gameState.selectedCell,
-            isGameOver = gameState.gameOver.value,
-            possibleMoves = possibleMoves
-        )
-
-        if (gameState.gameOver.value) {
-            Spacer(modifier = Modifier.height(80.dp))
-            Card(
+        if (gameState.paused.value) {
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                shape = RoundedCornerShape(8.dp)
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.5f)),
+                contentAlignment = Alignment.Center
             ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                Card(
+                    modifier = Modifier
+                        .width(300.dp)
+                        .padding(16.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFF2E211C))
                 ) {
-                    Text(
-                        text = "Игра окончена",
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        text = "Победа ${gameState.winner.value?.displayName ?: "Ничья"}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        textAlign = TextAlign.Center
-                    )
+                    Column(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = "Игра на паузе",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                            color = Color.White
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Button(
+                            onClick = {
+                                gameState.paused.value = false
+                                onResume()
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4A3728))
+                        ) {
+                            Text("Продолжить", color = Color.White)
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        TextButton(onClick = onExit) {
+                            Text("Выйти", color = Color.White)
+                        }
+                    }
                 }
             }
-        } else {
-            BottomGamePanel(gameState = gameState)
         }
     }
 }

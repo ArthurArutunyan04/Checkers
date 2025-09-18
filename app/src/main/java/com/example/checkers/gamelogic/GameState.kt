@@ -14,7 +14,8 @@ data class GameState(
     var selectedCell: Int? = null,
     val gameOver: MutableState<Boolean> = mutableStateOf(false),
     val winner: MutableState<PlayerColor?> = mutableStateOf(null),
-    val historyLog: MutableList<String> = mutableStateListOf()
+    val historyLog: MutableList<String> = mutableStateListOf(),
+    val paused: MutableState<Boolean> = mutableStateOf(false)
 ) {
     constructor(difficulty: Difficulty, playerColor: PlayerColor) : this(
         selectedDifficulty = difficulty,

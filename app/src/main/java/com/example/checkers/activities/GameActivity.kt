@@ -9,13 +9,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -83,7 +77,11 @@ class GameActivity : ComponentActivity() {
                                         GameLogic.aiMove(gameState!!)
                                     }
                                 }
-                            }
+                            },
+                            onPause = { gameState!!.paused.value = true },
+                            onResume = {  },
+                            onExit = { finish() },
+                            showTopPanel = true
                         )
                     }
                 }
@@ -92,8 +90,8 @@ class GameActivity : ComponentActivity() {
     }
 
     private fun handleCellClick(state: GameState, index: Int, onAiMove: () -> Unit) {
-        if (state.gameOver.value || state.isAiTurn) {
-            println("Click ignored: gameOver=${state.gameOver.value}, isAiTurn=${state.isAiTurn}")
+        if (state.gameOver.value || state.isAiTurn || state.paused.value) {
+            println("Click ignored: gameOver=${state.gameOver.value}, isAiTurn=${state.isAiTurn}, paused=${state.paused.value}")
             return
         }
 

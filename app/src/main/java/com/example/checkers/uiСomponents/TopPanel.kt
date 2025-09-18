@@ -2,6 +2,7 @@ package com.example.checkers.uiСomponents
 
 import android.app.Activity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,7 +19,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.example.checkers.ui.theme.Colus
 
 @Composable
-fun TopPanel(title: String) {
+fun TopPanel(title: String, onClick: (() -> Unit)? = null) {
     val view = LocalView.current
     val window = (view.context as? Activity)?.window
     val statusBarColor = 0xFF2E211C.toInt()
@@ -33,7 +34,9 @@ fun TopPanel(title: String) {
             .fillMaxWidth()
             .height(75.dp)
             .background(Color(0xFF2E211C))
-        ,
+            .let { modifier ->
+                if (onClick != null) modifier.clickable { onClick() } else modifier
+            },
         contentAlignment = Alignment.Center
     ) {
         Text(
