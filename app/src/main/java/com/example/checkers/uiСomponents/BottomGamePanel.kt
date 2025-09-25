@@ -51,7 +51,7 @@ fun BottomGamePanel(gameState: GameState) {
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Статистика игры",
+                    text = "Ход игры",
                     fontSize = 16.sp,
                     fontFamily = Colus,
                     fontWeight = FontWeight.Bold,

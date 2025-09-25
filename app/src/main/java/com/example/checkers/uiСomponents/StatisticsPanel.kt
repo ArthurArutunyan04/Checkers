@@ -110,7 +110,7 @@ fun StatePanel() {
 
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = "Побед в дуэлях: ",
+                    text = "Побед Сил Света: ",
                     color = Color.LightGray,
                     modifier = Modifier.weight(1f)
                 )
@@ -121,25 +121,13 @@ fun StatePanel() {
             }
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = "Поражений: ",
+                    text = "Побед Сил Тьмы: ",
                     color = Color.LightGray,
                     modifier = Modifier.weight(1f)
                 )
                 Text(
                     text = "1",
                     color = Color.Red
-                )
-            }
-
-            Row(modifier = Modifier.padding(bottom = 8.dp)) {
-                Text(
-                    text = "Процент побед: ",
-                    color = Color.LightGray,
-                    modifier = Modifier.weight(1f)
-                )
-                Text(
-                    text = "1",
-                    color = Color.White
                 )
             }
 
