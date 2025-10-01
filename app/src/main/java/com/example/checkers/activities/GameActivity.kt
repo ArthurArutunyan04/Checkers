@@ -8,6 +8,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.example.checkers.gamelogic.AnimatedPiece
 import com.example.checkers.gamelogic.Difficulty
 import com.example.checkers.gamelogic.GameLogic
 import com.example.checkers.gamelogic.GameState
@@ -28,6 +29,7 @@ class GameActivity : ComponentActivity() {
                 var showDifficultyDialog by remember { mutableStateOf(true) }
                 var showColorDialog by remember { mutableStateOf(false) }
                 var selectedDifficulty by remember { mutableStateOf<Difficulty?>(null) }
+                var animatedPiece by remember { mutableStateOf<AnimatedPiece?>(null) }
                 val coroutineScope = rememberCoroutineScope()
 
                 if (showDifficultyDialog) {
@@ -65,7 +67,7 @@ class GameActivity : ComponentActivity() {
                             innerPadding = innerPadding,
                             gameState = gameState!!,
                             onCellClick = { index ->
-                                handleCellClick(gameState!!, index) {
+                                handleCellClick(gameState!!, index, { animated -> animatedPiece = animated }) {
                                     coroutineScope.launch {
                                         kotlinx.coroutines.delay(500)
                                         GameLogic.aiMove(gameState!!)
@@ -75,7 +77,12 @@ class GameActivity : ComponentActivity() {
                             onPause = { gameState!!.paused.value = true },
                             onResume = { gameState!!.paused.value = false },
                             onExit = { finish() },
-                            showTopPanel = true
+                            showTopPanel = true,
+                            animatedPiece = animatedPiece,
+                            onAnimationEnd = {
+                                println("Animation ended, resetting animatedPiece")
+                                animatedPiece = null
+                            }
                         )
                     }
                 }
@@ -83,7 +90,12 @@ class GameActivity : ComponentActivity() {
         }
     }
 
-    private fun handleCellClick(state: GameState, index: Int, onAiMove: () -> Unit) {
+    private fun handleCellClick(
+        state: GameState,
+        index: Int,
+        setAnimatedPiece: (AnimatedPiece?) -> Unit,
+        onAiMove: () -> Unit
+    ) {
         if (state.gameOver.value || state.isAiTurn || state.paused.value) {
             println("Click ignored: gameOver=${state.gameOver.value}, isAiTurn=${state.isAiTurn}, paused=${state.paused.value}")
             return
@@ -96,15 +108,23 @@ class GameActivity : ComponentActivity() {
         println("Cell clicked: $index, pieceColor=$pieceColor, currentPlayer=${state.currentPlayer}, selected=$selected")
 
         if (selected != null) {
-            if (GameLogic.performMove(state, selected, index)) {
+            val (success, animatedPiece) = GameLogic.performMove(state, selected, index)
+            println("Move attempt: success=$success, animatedPiece=$animatedPiece")
+            if (success) {
+                setAnimatedPiece(animatedPiece)
                 if (state.isAiTurn) {
                     onAiMove()
                 }
             }
-            state.selectedCell = null
+            if (!success || animatedPiece == null) {
+                state.selectedCell = null
+                println("Deselected cell due to invalid move or no animation")
+            }
         } else if (pieceRes != null && pieceColor == state.currentPlayer) {
             state.selectedCell = index
             println("Selected piece at $index")
+        } else {
+            println("Invalid selection: pieceRes=$pieceRes, pieceColor=$pieceColor, currentPlayer=${state.currentPlayer}")
         }
     }
 }

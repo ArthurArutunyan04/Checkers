@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.checkers.R
+import com.example.checkers.gamelogic.AnimatedPiece
 import com.example.checkers.gamelogic.GameLogic
 import com.example.checkers.gamelogic.GameState
 
@@ -27,7 +28,9 @@ fun GameScreen(
     onPause: () -> Unit,
     onResume: () -> Unit,
     onExit: () -> Unit,
-    showTopPanel: Boolean = true
+    showTopPanel: Boolean = true,
+    animatedPiece: AnimatedPiece? = null,
+    onAnimationEnd: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -49,7 +52,8 @@ fun GameScreen(
         ) {
             if (showTopPanel) {
                 TopPanel(
-                    title = stringResource(R.string.difficulty_level, stringResource(gameState.selectedDifficulty.displayNameRes)),                    onClick = onPause
+                    title = stringResource(R.string.difficulty_level, stringResource(gameState.selectedDifficulty.displayNameRes)),
+                    onClick = onPause
                 )
             }
 
@@ -66,7 +70,9 @@ fun GameScreen(
                 onCellClick = onCellClick,
                 selectedCell = gameState.selectedCell,
                 isGameOver = gameState.gameOver.value,
-                possibleMoves = possibleMoves
+                possibleMoves = possibleMoves,
+                animatedPiece = animatedPiece,
+                onAnimationEnd = onAnimationEnd
             )
 
             if (gameState.gameOver.value) {
