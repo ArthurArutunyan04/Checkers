@@ -1,0 +1,83 @@
+<resources>
+
+    <string name="app_name">Checkers</string>
+
+
+
+    <!-- Game Logic -->
+    <string name="move_log_format">%1$s: %2$s → %3$s</string>
+    <string name="capture_move_format">%1$s: %2$s → %3$s (удаление)</string>
+    <string name="piece_captured">Взята фигура на %s</string>
+    <string name="piece_promoted">%s крип-мечник на %s стал крипом-дальником</string>
+    <string name="white_forces_victory">Победа Сил Света</string>
+    <string name="black_forces_victory">Победа Сил Тьмы</string>
+    <string name="forces_of_light_victory">Победа Сил Света</string>
+    <string name="forces_of_darkness_victory">Победа Сил Тьмы</string>
+
+
+    <!-- Game State Messages -->
+    <string name="white_forces_turn">Ход Сил Света</string>
+    <string name="black_forces_turn">Ход Сил Тьмы</string>
+    <string name="forces_of_light_turn">Ход Сил Света</string>
+    <string name="forces_of_darkness_turn">Ход Сил Тьмы</string>
+
+
+    <!-- Player Colors -->
+    <string name="forces_of_light">Силы Света</string>
+    <string name="forces_of_darkness">Силы Тьмы</string>
+
+
+    <!-- Bottom Game Panel -->
+    <string name="game_progress">Ход игры</string>
+
+
+    <!-- Button Panel -->
+    <string name="play">Играть</string>
+    <string name="statistics">Статистика</string>
+    <string name="settings">Настройки</string>
+
+
+    <!-- Color Dialog -->
+    <string name="choose_piece_color">Выберите цвет фигур</string>
+    <string name="forces_of_light_desc">Силы Света</string>
+    <string name="forces_of_darkness_desc">Силы Тьмы</string>
+
+
+    <!-- Custom Difficulty Dialog -->
+    <string name="difficulty_level_title">Уровень сложности</string>
+    <string name="cancel">Отмена</string>
+
+    <!-- Difficulty Levels -->
+    <string name="difficulty_easy">Легкий</string>
+    <string name="difficulty_medium">Средний</string>
+    <string name="difficulty_hard">Сложный</string>
+    <string name="difficulty_duel">Дуэль</string>
+
+    <!-- Game Screen -->
+    <string name="game_paused">Игра на паузе</string>
+    <string name="resume_game">Продолжить</string>
+    <string name="exit_game">Выйти</string>
+    <string name="game_over">Игра окончена</string>
+    <string name="victory">Победа %s</string>
+    <string name="draw">Ничья</string>
+    <string name="difficulty_level">%s</string>
+
+
+    <!-- State Panel -->
+    <string name="general_statistics">Общая статистика</string>
+    <string name="games_played">Игр сыграно:</string>
+    <string name="wins">Побед:</string>
+    <string name="losses">Поражений:</string>
+    <string name="win_percentage">Процент побед:</string>
+
+    <string name="duel">Дуэль</string>
+    <string name="duels_played">Дуэлей проведено:</string>
+    <string name="light_forces_wins">Побед Сил Света:</string>
+    <string name="dark_forces_wins">Побед Сил Тьмы:</string>
+
+    <string name="additional">Дополнительно</string>
+    <string name="win_streak">Серия побед:</string>
+    <string name="avg_game_time">Среднее время игры:</string>
+    <string name="creeps_killed">Крипов добито:</string>
+    <string name="mage_creeps_created">Крипов-магов создано:</string>
+</resources>
