@@ -11,9 +11,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.checkers.R
 import com.example.checkers.ui.theme.Colus
 
 @Composable
@@ -31,7 +33,7 @@ fun StatePanel() {
                 .padding(12.dp)
         ) {
             Text(
-                text = "Общая статистика",
+                text = stringResource(R.string.general_statistics),
                 color = Color.White,
                 fontFamily = Colus,
                 fontWeight = FontWeight.Bold,
@@ -41,7 +43,7 @@ fun StatePanel() {
 
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = "Игр сыграно: ",
+                    text = stringResource(R.string.games_played),
                     color = Color.LightGray,
                     modifier = Modifier.weight(1f)
                 )
@@ -53,7 +55,7 @@ fun StatePanel() {
 
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = "Побед: ",
+                    text = stringResource(R.string.wins),
                     color = Color.LightGray,
                     modifier = Modifier.weight(1f)
                 )
@@ -65,7 +67,7 @@ fun StatePanel() {
 
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = "Поражений: ",
+                    text = stringResource(R.string.losses),
                     color = Color.LightGray,
                     modifier = Modifier.weight(1f)
                 )
@@ -77,7 +79,7 @@ fun StatePanel() {
 
             Row(modifier = Modifier.padding(bottom = 8.dp)) {
                 Text(
-                    text = "Процент побед: ",
+                    text = stringResource(R.string.win_percentage),
                     color = Color.LightGray,
                     modifier = Modifier.weight(1f)
                 )
@@ -88,7 +90,7 @@ fun StatePanel() {
             }
 
             Text(
-                text = "Дуэль",
+                text = stringResource(R.string.duel),
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
@@ -98,7 +100,7 @@ fun StatePanel() {
 
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = "Дуэлей проведено: ",
+                    text = stringResource(R.string.duels_played),
                     color = Color.LightGray,
                     modifier = Modifier.weight(1f)
                 )
@@ -110,7 +112,7 @@ fun StatePanel() {
 
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = "Побед Сил Света: ",
+                    text = stringResource(R.string.light_forces_wins),
                     color = Color.LightGray,
                     modifier = Modifier.weight(1f)
                 )
@@ -121,7 +123,7 @@ fun StatePanel() {
             }
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = "Побед Сил Тьмы: ",
+                    text = stringResource(R.string.dark_forces_wins),
                     color = Color.LightGray,
                     modifier = Modifier.weight(1f)
                 )
@@ -133,7 +135,7 @@ fun StatePanel() {
 
 
             Text(
-                text = "Дополнительно",
+                text = stringResource(R.string.additional),
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
@@ -143,7 +145,7 @@ fun StatePanel() {
 
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = "Серия побед: ",
+                    text = stringResource(R.string.win_streak),
                     color = Color.LightGray,
                     modifier = Modifier.weight(1f)
                 )
@@ -155,7 +157,7 @@ fun StatePanel() {
 
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = "Среднее время игры: ",
+                    text = stringResource(R.string.avg_game_time),
                     color = Color.LightGray,
                     modifier = Modifier.weight(1f)
                 )
@@ -167,7 +169,7 @@ fun StatePanel() {
 
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = "Крипов добито: ",
+                    text = stringResource(R.string.creeps_killed),
                     color = Color.LightGray,
                     modifier = Modifier.weight(1f)
                 )
@@ -179,7 +181,7 @@ fun StatePanel() {
 
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = "Крипов-магов создано: ",
+                    text = stringResource(R.string.mage_creeps_created),
                     color = Color.LightGray,
                     modifier = Modifier.weight(1f)
                 )

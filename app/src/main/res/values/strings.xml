@@ -1,3 +1,81 @@
 <resources>
     <string name="app_name">Checkers</string>
+
+    <!-- Game Logic -->
+    <string name="move_log_format">%1$s: %2$s → %3$s</string>
+    <string name="capture_move_format">%1$s: %2$s → %3$s (capture)</string>
+    <string name="piece_captured">Piece captured at %s</string>
+    <string name="piece_promoted">%s piece at %s promoted to king</string>
+    <string name="white_forces_victory">Radiant victory</string>
+    <string name="black_forces_victory">Dire victory</string>
+    <string name="forces_of_light_victory">Radiant victory</string>
+    <string name="forces_of_darkness_victory">Dire victory</string>
+
+    <!-- Game State Messages -->
+    <string name="white_forces_turn">Radiant turn</string>
+    <string name="black_forces_turn">Dire turn</string>
+    <string name="forces_of_light_turn">Radiant turn</string>
+    <string name="forces_of_darkness_turn">Dire turn</string>
+
+
+    <!-- Player Colors -->
+    <string name="forces_of_light">Radiant</string>
+    <string name="forces_of_darkness">Dire</string>
+
+
+    <!-- Bottom Game Panel -->
+    <string name="game_progress">Game Progress</string>
+
+
+    <!-- Button Panel -->
+    <string name="play">Play</string>
+    <string name="statistics">Statistics</string>
+    <string name="settings">Settings</string>
+
+
+    <!-- Color Dialog -->
+    <string name="choose_piece_color">Choose Piece Color</string>
+    <string name="forces_of_light_desc">Radiant</string>
+    <string name="forces_of_darkness_desc">Dire</string>
+
+
+    <!-- Custom Difficulty Dialog -->
+    <string name="difficulty_level_title">Difficulty Level</string>
+    <string name="cancel">Cancel</string>
+
+
+    <!-- Difficulty Levels -->
+    <string name="difficulty_easy">Easy</string>
+    <string name="difficulty_medium">Medium</string>
+    <string name="difficulty_hard">Hard</string>
+    <string name="difficulty_duel">Duel</string>
+
+
+    <!-- Game Screen -->
+    <string name="game_paused">Game Paused</string>
+    <string name="resume_game">Resume</string>
+    <string name="exit_game">Exit</string>
+    <string name="game_over">Game Over</string>
+    <string name="victory">Victory %s</string>
+    <string name="draw">Draw</string>
+    <string name="difficulty_level">%s</string>
+
+
+    <!-- State Panel -->
+    <string name="general_statistics">General Statistics</string>
+    <string name="games_played">Games played:</string>
+    <string name="wins">Wins:</string>
+    <string name="losses">Losses:</string>
+    <string name="win_percentage">Win percentage:</string>
+
+    <string name="duel">Duel</string>
+    <string name="duels_played">Duels played:</string>
+    <string name="light_forces_wins">Radiant wins:</string>
+    <string name="dark_forces_wins">Dire wins:</string>
+
+    <string name="additional">Additional</string>
+    <string name="win_streak">Win streak:</string>
+    <string name="avg_game_time">Average game time:</string>
+    <string name="creeps_killed">Creeps killed:</string>
+    <string name="mage_creeps_created">Mage creeps created:</string>
 </resources>

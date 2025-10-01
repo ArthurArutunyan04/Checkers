@@ -3,20 +3,11 @@ package com.example.checkers.activities
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalContext
 import com.example.checkers.gamelogic.Difficulty
 import com.example.checkers.gamelogic.GameLogic
 import com.example.checkers.gamelogic.GameState
@@ -32,6 +23,7 @@ class GameActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CheckersTheme {
+                val context = LocalContext.current
                 var gameState by remember { mutableStateOf<GameState?>(null) }
                 var showDifficultyDialog by remember { mutableStateOf(true) }
                 var showColorDialog by remember { mutableStateOf(false) }
@@ -47,6 +39,7 @@ class GameActivity : ComponentActivity() {
                                 showColorDialog = true
                             } else {
                                 gameState = GameState(
+                                    context = context,
                                     difficulty = difficulty,
                                     playerColor = PlayerColor.WHITE
                                 ).apply { initializeBoard() }
@@ -58,6 +51,7 @@ class GameActivity : ComponentActivity() {
                     ColorDialog(
                         onSelect = { color ->
                             gameState = GameState(
+                                context = context,
                                 difficulty = selectedDifficulty!!,
                                 playerColor = color
                             ).apply { initializeBoard() }
@@ -79,7 +73,7 @@ class GameActivity : ComponentActivity() {
                                 }
                             },
                             onPause = { gameState!!.paused.value = true },
-                            onResume = {  },
+                            onResume = { gameState!!.paused.value = false },
                             onExit = { finish() },
                             showTopPanel = true
                         )

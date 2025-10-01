@@ -18,9 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowInsetsControllerCompat
+import com.example.checkers.R
 import com.example.checkers.activities.GameActivity
+import com.example.checkers.activities.SettingsActivity
 import com.example.checkers.activities.StateActivity
 
 @Composable
@@ -35,8 +38,6 @@ fun ButtonPanel() {
         WindowInsetsControllerCompat(it, it.decorView).isAppearanceLightNavigationBars = false
     }
 
-
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -45,7 +46,7 @@ fun ButtonPanel() {
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         AnimatedButton(
-            text = "Играть",
+            text = stringResource(R.string.play),
             icon = Icons.Filled.PlayArrow,
             onClick = {
                 val intent = Intent(context, GameActivity::class.java)
@@ -55,7 +56,7 @@ fun ButtonPanel() {
         )
 
         AnimatedButton(
-            text = "Статистика",
+            text = stringResource(R.string.statistics),
             icon = Icons.Filled.Info,
             onClick = {
                 val intent = Intent(context, StateActivity::class.java)
@@ -65,9 +66,12 @@ fun ButtonPanel() {
         )
 
         AnimatedButton(
-            text = "Настройки",
+            text = stringResource(R.string.settings),
             icon = Icons.Filled.Settings,
-            onClick = { /* TODO: Settings */ },
+            onClick = {
+                 val intent = Intent(context, SettingsActivity::class.java)
+                 context.startActivity(intent)
+            },
             startDelay = 500L
         )
     }

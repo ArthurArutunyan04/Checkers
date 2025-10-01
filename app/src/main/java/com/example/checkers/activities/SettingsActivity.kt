@@ -20,10 +20,11 @@ import androidx.compose.ui.res.stringResource
 import com.example.checkers.R
 import com.example.checkers.ui.theme.CheckersTheme
 import com.example.checkers.uiСomponents.ButtonPanel
+import com.example.checkers.uiСomponents.SettingPanel
 import com.example.checkers.uiСomponents.StatePanel
 import com.example.checkers.uiСomponents.TopPanel
 
-class StateActivity : ComponentActivity() {
+class SettingsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -31,7 +32,7 @@ class StateActivity : ComponentActivity() {
         setContent {
             CheckersTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    StateScreen(innerPadding = innerPadding)
+                    SettingScreen(innerPadding = innerPadding)
                 }
             }
         }
@@ -39,7 +40,7 @@ class StateActivity : ComponentActivity() {
 }
 
 @Composable
-fun StateScreen(innerPadding: PaddingValues) {
+fun SettingScreen(innerPadding: PaddingValues) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -56,8 +57,8 @@ fun StateScreen(innerPadding: PaddingValues) {
             .padding(innerPadding),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        TopPanel(title = stringResource(R.string.statistics))
-        StatePanel()
+        TopPanel(title = stringResource(R.string.settings))
+        SettingPanel()
         ButtonPanel()
     }
 }

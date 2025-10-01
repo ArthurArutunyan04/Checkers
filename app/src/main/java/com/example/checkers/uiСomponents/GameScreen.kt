@@ -10,10 +10,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.checkers.R
 import com.example.checkers.gamelogic.GameLogic
 import com.example.checkers.gamelogic.GameState
 
@@ -47,8 +49,7 @@ fun GameScreen(
         ) {
             if (showTopPanel) {
                 TopPanel(
-                    title = "${gameState.selectedDifficulty.displayName}",
-                    onClick = onPause
+                    title = stringResource(R.string.difficulty_level, stringResource(gameState.selectedDifficulty.displayNameRes)),                    onClick = onPause
                 )
             }
 
@@ -81,12 +82,19 @@ fun GameScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "Игра окончена",
+                            text = stringResource(R.string.game_over),
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "Победа ${gameState.winner.value?.displayName ?: "Ничья"}",
+                            text = if (gameState.winner.value != null) {
+                                stringResource(
+                                    R.string.victory,
+                                    stringResource(gameState.winner.value?.displayNameRes ?: R.string.forces_of_light)
+                                )
+                            } else {
+                                stringResource(R.string.draw)
+                            },
                             style = MaterialTheme.typography.bodyLarge,
                             textAlign = TextAlign.Center
                         )
@@ -119,7 +127,7 @@ fun GameScreen(
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            text = "Игра на паузе",
+                            text = stringResource(R.string.game_paused),
                             fontWeight = FontWeight.Bold,
                             fontSize = 20.sp,
                             color = Color.White
@@ -133,11 +141,17 @@ fun GameScreen(
                             },
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4A3728))
                         ) {
-                            Text("Продолжить", color = Color.White)
+                            Text(
+                                text = stringResource(R.string.resume_game),
+                                color = Color.White
+                            )
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         TextButton(onClick = onExit) {
-                            Text("Выйти", color = Color.White)
+                            Text(
+                                text = stringResource(R.string.exit_game),
+                                color = Color.White
+                            )
                         }
                     }
                 }

@@ -24,7 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -32,18 +34,30 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowInsetsControllerCompat
+import com.example.checkers.R
 import com.example.checkers.gamelogic.Difficulty
 import com.example.checkers.ui.theme.Colus
 
 @Composable
 fun CustomDifficultyDialog(onSelect: (Difficulty) -> Unit, onDismiss: () -> Unit) {
     val view = LocalView.current
+    val context = LocalContext.current
     val window = (view.context as? Activity)?.window
     val statusBarColor = 0xFF2E211C.toInt()
 
     window?.let {
         it.statusBarColor = statusBarColor
         WindowInsetsControllerCompat(it, it.decorView).isAppearanceLightStatusBars = false
+    }
+
+    @Composable
+    fun getLocalizedDifficultyName(difficulty: Difficulty): String {
+        return when (difficulty) {
+            Difficulty.EASY -> stringResource(R.string.difficulty_easy)
+            Difficulty.MEDIUM -> stringResource(R.string.difficulty_medium)
+            Difficulty.HARD -> stringResource(R.string.difficulty_hard)
+            Difficulty.DUEL -> stringResource(R.string.difficulty_duel)
+        }
     }
 
     AnimatedVisibility(
@@ -55,14 +69,14 @@ fun CustomDifficultyDialog(onSelect: (Difficulty) -> Unit, onDismiss: () -> Unit
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                brush = Brush.radialGradient(
-                    colors = listOf(
-                        Color(0xFF3A2A24),
-                        Color(0xFF12140F)
-                    ),
-                    radius = 800f
+                    brush = Brush.radialGradient(
+                        colors = listOf(
+                            Color(0xFF3A2A24),
+                            Color(0xFF12140F)
+                        ),
+                        radius = 800f
+                    )
                 )
-            )
                 .wrapContentSize(Alignment.Center)
         ) {
             Card(
@@ -78,7 +92,7 @@ fun CustomDifficultyDialog(onSelect: (Difficulty) -> Unit, onDismiss: () -> Unit
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Уровень сложности",
+                        text = stringResource(R.string.difficulty_level_title),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = Colus,
@@ -86,16 +100,15 @@ fun CustomDifficultyDialog(onSelect: (Difficulty) -> Unit, onDismiss: () -> Unit
                         color = Color.White,
                         modifier = Modifier.padding(bottom = 16.dp)
                     )
+
                     Difficulty.values().forEach { difficulty ->
                         val buttonColor = when (difficulty) {
-                            Difficulty.EASY,  Difficulty.MEDIUM, Difficulty.HARD
-                                -> Color(0xFF969292)
+                            Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD -> Color(0xFF969292)
                             Difficulty.DUEL -> Color(0xFF12140F)
                         }
 
                         val textColor = when (difficulty) {
-                            Difficulty.EASY,  Difficulty.MEDIUM, Difficulty.HARD
-                                -> Color.Black
+                            Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD -> Color.Black
                             Difficulty.DUEL -> Color.White
                         }
 
@@ -119,7 +132,7 @@ fun CustomDifficultyDialog(onSelect: (Difficulty) -> Unit, onDismiss: () -> Unit
                             )
                         ) {
                             Text(
-                                text = difficulty.displayName,
+                                text = getLocalizedDifficultyName(difficulty),
                                 style = textStyle.copy(
                                     fontSize = 16.sp,
                                     fontFamily = Colus
@@ -127,7 +140,9 @@ fun CustomDifficultyDialog(onSelect: (Difficulty) -> Unit, onDismiss: () -> Unit
                             )
                         }
                     }
+
                     Spacer(modifier = Modifier.height(16.dp))
+
                     Button(
                         onClick = onDismiss,
                         modifier = Modifier
@@ -140,7 +155,7 @@ fun CustomDifficultyDialog(onSelect: (Difficulty) -> Unit, onDismiss: () -> Unit
                         )
                     ) {
                         Text(
-                            text = "Отмена",
+                            text = stringResource(R.string.cancel),
                             fontSize = 16.sp,
                             fontFamily = Colus
                         )

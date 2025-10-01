@@ -1,11 +1,14 @@
 package com.example.checkers.gamelogic
 
+import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
+import com.example.checkers.R
 
 data class GameState(
+    val context: Context,
     val board: MutableMap<Int, Int> = mutableStateMapOf(),
     var currentPlayer: PlayerColor = PlayerColor.WHITE,
     val selectedDifficulty: Difficulty,
@@ -17,7 +20,8 @@ data class GameState(
     val historyLog: MutableList<String> = mutableStateListOf(),
     val paused: MutableState<Boolean> = mutableStateOf(false)
 ) {
-    constructor(difficulty: Difficulty, playerColor: PlayerColor) : this(
+    constructor(context: Context, difficulty: Difficulty, playerColor: PlayerColor) : this(
+        context = context,
         selectedDifficulty = difficulty,
         playerColor = playerColor
     )
@@ -28,13 +32,17 @@ data class GameState(
             board[index] = res
         }
         historyLog.clear()
-        historyLog.add("Ход Сил Света")
+        historyLog.add(context.getString(R.string.forces_of_light_turn))
     }
 
     fun switchPlayer() {
         currentPlayer = if (currentPlayer == PlayerColor.WHITE) PlayerColor.BLACK else PlayerColor.WHITE
         isAiTurn = (currentPlayer != playerColor) && (selectedDifficulty != Difficulty.DUEL)
-        historyLog.add("Ход ${if (currentPlayer == PlayerColor.WHITE) "Сил Света" else "Сил Тьмы"}")
+        val turnMessage = if (currentPlayer == PlayerColor.WHITE)
+            context.getString(R.string.forces_of_light_turn)
+        else
+            context.getString(R.string.forces_of_darkness_turn)
+        historyLog.add(turnMessage)
     }
 
     fun isValidCell(index: Int): Boolean {

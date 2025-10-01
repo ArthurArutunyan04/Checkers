@@ -29,8 +29,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -43,12 +45,27 @@ import com.example.checkers.ui.theme.Colus
 @Composable
 fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
     val view = LocalView.current
+    val context = LocalContext.current
     val window = (view.context as? Activity)?.window
     val statusBarColor = 0xFF2E211C.toInt()
 
     window?.let {
         it.statusBarColor = statusBarColor
         WindowInsetsControllerCompat(it, it.decorView).isAppearanceLightStatusBars = false
+    }
+
+    val getLocalizedPlayerColorName: @Composable (PlayerColor) -> String = { playerColor ->
+        when (playerColor) {
+            PlayerColor.WHITE -> stringResource(R.string.forces_of_light)
+            PlayerColor.BLACK -> stringResource(R.string.forces_of_darkness)
+        }
+    }
+
+    val getLocalizedPlayerColorDescription: @Composable (PlayerColor) -> String = { playerColor ->
+        when (playerColor) {
+            PlayerColor.WHITE -> stringResource(R.string.forces_of_light_desc)
+            PlayerColor.BLACK -> stringResource(R.string.forces_of_darkness_desc)
+        }
     }
 
     AnimatedVisibility(
@@ -83,7 +100,7 @@ fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Выберите цвет фигур",
+                        text = stringResource(R.string.choose_piece_color),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = Colus,
@@ -114,12 +131,12 @@ fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Image(
                                     painter = painterResource(id = R.drawable.white_win),
-                                    contentDescription = "Силы Света",
+                                    contentDescription = getLocalizedPlayerColorDescription(PlayerColor.WHITE),
                                     modifier = Modifier.size(32.dp)
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(
-                                    text = PlayerColor.WHITE.displayName,
+                                    text = getLocalizedPlayerColorName(PlayerColor.WHITE),
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Medium,
                                     fontFamily = Colus,
@@ -144,12 +161,12 @@ fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Image(
                                     painter = painterResource(id = R.drawable.black_win),
-                                    contentDescription = "Силы Тьмы",
+                                    contentDescription = getLocalizedPlayerColorDescription(PlayerColor.BLACK),
                                     modifier = Modifier.size(32.dp)
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(
-                                    text = PlayerColor.BLACK.displayName,
+                                    text = getLocalizedPlayerColorName(PlayerColor.BLACK),
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Medium,
                                     fontFamily = Colus,
@@ -173,7 +190,7 @@ fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
                         )
                     ) {
                         Text(
-                            text = "Отмена",
+                            text = stringResource(R.string.cancel),
                             fontSize = 16.sp,
                             fontFamily = Colus,
                             fontWeight = FontWeight.Medium

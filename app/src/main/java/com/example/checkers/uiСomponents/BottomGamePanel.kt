@@ -13,15 +13,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.checkers.R
 import com.example.checkers.gamelogic.GameState
 import com.example.checkers.ui.theme.Colus
 
 @Composable
 fun BottomGamePanel(gameState: GameState) {
+    val context = LocalContext.current
     val listState = rememberLazyListState()
 
     LaunchedEffect(gameState.historyLog.size) {
@@ -51,7 +55,7 @@ fun BottomGamePanel(gameState: GameState) {
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Ход игры",
+                    text = stringResource(R.string.game_progress),
                     fontSize = 16.sp,
                     fontFamily = Colus,
                     fontWeight = FontWeight.Bold,

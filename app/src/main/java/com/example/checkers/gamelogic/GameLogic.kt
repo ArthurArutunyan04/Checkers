@@ -1,5 +1,6 @@
 package com.example.checkers.gamelogic
 
+import android.content.Context
 import com.example.checkers.R
 import kotlin.math.abs
 
@@ -233,11 +234,17 @@ object GameLogic {
         val toCol = toIndex % 8
 
         val pieceColor = getPieceColor(piece) ?: return false
-        val colorName = if (pieceColor == PlayerColor.WHITE) "Силы Света" else "Силы Тьмы"
+        val colorName = if (pieceColor == PlayerColor.WHITE) state.context.getString(R.string.forces_of_light) else state.context.getString(R.string.forces_of_darkness)
 
         val fromNotation = indexToChessNotation(fromIndex)
         val toNotation = indexToChessNotation(toIndex)
-        state.addLog("$colorName: $fromNotation → $toNotation${if (isCapture) " (удаление)" else ""}")
+
+        val moveLog = if (isCapture) {
+            state.context.getString(R.string.capture_move_format, colorName, fromNotation, toNotation)
+        } else {
+            state.context.getString(R.string.move_log_format, colorName, fromNotation, toNotation)
+        }
+        state.addLog(moveLog)
 
         state.board[toIndex] = piece
         state.board.remove(fromIndex)
@@ -257,7 +264,7 @@ object GameLogic {
                     if (midColor != pieceColor) {
                         state.board.remove(currentIndex)
                         val capturedNotation = indexToChessNotation(currentIndex)
-                        state.addLog("Взята фигура на $capturedNotation")
+                        state.addLog(state.context.getString(R.string.piece_captured, capturedNotation))
                         break
                     }
                 }
@@ -270,7 +277,7 @@ object GameLogic {
         val wasKing = piece == R.drawable.white_win || piece == R.drawable.black_win
         if (!wasKing && ((isWhite && toRow == 0) || (!isWhite && toRow == 7))) {
             state.board[toIndex] = if (isWhite) R.drawable.white_win else R.drawable.black_win
-            state.addLog("$colorName крип-мечник на $toNotation стал крипом-дальником")
+            state.addLog(state.context.getString(R.string.piece_promoted, colorName, toNotation))
         }
 
         if (isCapture) {
@@ -296,11 +303,11 @@ object GameLogic {
         if (whitePieces == 0) {
             state.winner.value = PlayerColor.BLACK
             state.gameOver.value = true
-            state.addLog("Победа Сил Тьмы")
+            state.addLog(state.context.getString(R.string.forces_of_darkness_victory))
         } else if (blackPieces == 0) {
             state.winner.value = PlayerColor.WHITE
             state.gameOver.value = true
-            state.addLog("Победа Сил Света")
+            state.addLog(state.context.getString(R.string.forces_of_light_victory))
         }
     }
 
