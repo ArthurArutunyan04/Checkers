@@ -1,6 +1,7 @@
 package com.example.checkers.uiСomponents
 
 import android.app.Activity
+import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.checkers.R
+import com.example.checkers.activities.MainActivity
 import com.example.checkers.gamelogic.Difficulty
 import com.example.checkers.ui.theme.Colus
 
@@ -144,7 +146,11 @@ fun CustomDifficultyDialog(onSelect: (Difficulty) -> Unit, onDismiss: () -> Unit
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Button(
-                        onClick = onDismiss,
+                        onClick = {
+                            val intent = Intent(context, MainActivity::class.java)
+                            context.startActivity(intent)
+                            (context as? Activity)?.finish()
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 4.dp),
