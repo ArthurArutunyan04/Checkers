@@ -86,4 +86,6 @@
     <string name="music_volume">Громкость музыки</string>
     <string name="russian">Русский</string>
     <string name="english">English</string>
+    <string name="back">Назад</string>
+
 </resources>

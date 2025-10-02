@@ -6,7 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.example.checkers.R
-import com.example.checkers.uiСomponents.initializeAppLanguage
+import com.example.checkers.gamelogic.initializeAppLanguage
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

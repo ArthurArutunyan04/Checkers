@@ -13,11 +13,11 @@ import com.example.checkers.gamelogic.Difficulty
 import com.example.checkers.gamelogic.GameLogic
 import com.example.checkers.gamelogic.GameState
 import com.example.checkers.gamelogic.PlayerColor
+import com.example.checkers.gamelogic.initializeAppLanguage
 import com.example.checkers.ui.theme.CheckersTheme
 import com.example.checkers.uiСomponents.ColorDialog
 import com.example.checkers.uiСomponents.CustomDifficultyDialog
 import com.example.checkers.uiСomponents.GameScreen
-import com.example.checkers.uiСomponents.initializeAppLanguage
 import kotlinx.coroutines.launch
 
 class GameActivity : ComponentActivity() {

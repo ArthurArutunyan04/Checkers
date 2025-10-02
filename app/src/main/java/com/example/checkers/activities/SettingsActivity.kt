@@ -18,11 +18,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.example.checkers.R
+import com.example.checkers.gamelogic.initializeAppLanguage
 import com.example.checkers.ui.theme.CheckersTheme
 import com.example.checkers.uiСomponents.ButtonPanel
 import com.example.checkers.uiСomponents.SettingPanel
 import com.example.checkers.uiСomponents.TopPanel
-import com.example.checkers.uiСomponents.initializeAppLanguage
 
 class SettingsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
