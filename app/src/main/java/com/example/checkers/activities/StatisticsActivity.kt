@@ -22,10 +22,14 @@ import com.example.checkers.ui.theme.CheckersTheme
 import com.example.checkers.uiСomponents.ButtonPanel
 import com.example.checkers.uiСomponents.StatePanel
 import com.example.checkers.uiСomponents.TopPanel
+import com.example.checkers.uiСomponents.initializeAppLanguage
 
 class StateActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        initializeAppLanguage(this)
+
         enableEdgeToEdge()
 
         setContent {

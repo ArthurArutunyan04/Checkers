@@ -17,11 +17,15 @@ import com.example.checkers.ui.theme.CheckersTheme
 import com.example.checkers.uiСomponents.ColorDialog
 import com.example.checkers.uiСomponents.CustomDifficultyDialog
 import com.example.checkers.uiСomponents.GameScreen
+import com.example.checkers.uiСomponents.initializeAppLanguage
 import kotlinx.coroutines.launch
 
 class GameActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        initializeAppLanguage(this)
+
         setContent {
             CheckersTheme {
                 val context = LocalContext.current

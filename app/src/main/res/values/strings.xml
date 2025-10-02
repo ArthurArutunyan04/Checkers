@@ -78,4 +78,11 @@
     <string name="avg_game_time">Average game time:</string>
     <string name="creeps_killed">Creeps killed:</string>
     <string name="mage_creeps_created">Mage creeps created:</string>
+
+    <!-- Settings - new strings -->
+    <string name="language">Language</string>
+    <string name="sound_volume">Sound Volume</string>
+    <string name="music_volume">Music Volume</string>
+    <string name="russian">Russian</string>
+    <string name="english">English</string>
 </resources>

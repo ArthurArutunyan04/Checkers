@@ -80,4 +80,10 @@
     <string name="avg_game_time">Среднее время игры:</string>
     <string name="creeps_killed">Крипов добито:</string>
     <string name="mage_creeps_created">Крипов-магов создано:</string>
+
+    <string name="language">Язык</string>
+    <string name="sound_volume">Громкость звуков</string>
+    <string name="music_volume">Громкость музыки</string>
+    <string name="russian">Русский</string>
+    <string name="english">English</string>
 </resources>

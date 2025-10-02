@@ -22,10 +22,14 @@ import com.example.checkers.ui.theme.CheckersTheme
 import com.example.checkers.uiСomponents.GameBoard
 import com.example.checkers.uiСomponents.TopPanel
 import com.example.checkers.gamelogic.generateInitialPieces
+import com.example.checkers.uiСomponents.initializeAppLanguage
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        initializeAppLanguage(this)
+
         enableEdgeToEdge()
 
         setContent {
