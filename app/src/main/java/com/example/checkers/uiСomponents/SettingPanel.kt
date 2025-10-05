@@ -36,8 +36,13 @@ import com.example.checkers.gamelogic.saveLanguage
 import com.example.checkers.gamelogic.saveMusicVolume
 import com.example.checkers.gamelogic.saveSoundVolume
 import com.example.checkers.gamelogic.setAppLanguage
+import com.example.checkers.ui.theme.ActiveTrackColor
 import com.example.checkers.ui.theme.Colus
-import java.util.Locale
+import com.example.checkers.ui.theme.Field
+import com.example.checkers.ui.theme.InactiveTrackColor
+import com.example.checkers.ui.theme.ThumbColor
+import com.example.checkers.ui.theme.TopBarColor
+import com.example.checkers.ui.theme.White
 
 
 @Composable
@@ -49,7 +54,7 @@ fun SettingPanel() {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         shape = RoundedCornerShape(15.dp),
-        colors = CardDefaults.cardColors(Color(0xFF2E211C))
+        colors = CardDefaults.cardColors(TopBarColor)
     ) {
         Column(
             modifier = Modifier
@@ -70,8 +75,8 @@ fun SettingPanel() {
                     .padding(vertical = 4.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF12140F),
-                    contentColor = Color.White
+                    containerColor = TopBarColor,
+                    contentColor = White
                 )
             ) {
                 Text(
@@ -102,12 +107,12 @@ fun LanguageSwitchButton() {
             .aspectRatio(4f),
         shape = RoundedCornerShape(8.dp),
         colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF12140F)
+            containerColor = Field
         )
     ) {
         Text(
             text = "${getLocalizedString("language", context)}: ${getCurrentLanguageDisplayName(context)}",
-            color = Color.White
+            color = White
         )
     }
 }
@@ -125,7 +130,7 @@ fun SoundVolumeSlider() {
     ) {
         Text(
             text = "🔊 ${getLocalizedString("sound_volume", context)}",
-            color = Color.White,
+            color = White,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         Slider(
@@ -136,14 +141,14 @@ fun SoundVolumeSlider() {
             },
             modifier = Modifier.fillMaxWidth(),
             colors = androidx.compose.material3.SliderDefaults.colors(
-                thumbColor = Color(0xFFD4AF37),
-                activeTrackColor = Color(0xFFD4AF37),
-                inactiveTrackColor = Color(0x66D4AF37)
+                thumbColor = ThumbColor,
+                activeTrackColor = ActiveTrackColor,
+                inactiveTrackColor = InactiveTrackColor
             )
         )
         Text(
             text = "${(soundVolume.floatValue * 100).toInt()}%",
-            color = Color.White,
+            color = White,
             modifier = Modifier.align(Alignment.End)
         )
     }
@@ -162,7 +167,7 @@ fun MusicVolumeSlider() {
     ) {
         Text(
             text = "🎵 ${getLocalizedString("music_volume", context)}",
-            color = Color.White,
+            color = White,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         Slider(
@@ -173,14 +178,14 @@ fun MusicVolumeSlider() {
             },
             modifier = Modifier.fillMaxWidth(),
             colors = androidx.compose.material3.SliderDefaults.colors(
-                thumbColor = Color(0xFFD4AF37),
-                activeTrackColor = Color(0xFFD4AF37),
-                inactiveTrackColor = Color(0x66D4AF37)
+                thumbColor = ThumbColor,
+                activeTrackColor = ActiveTrackColor,
+                inactiveTrackColor = InactiveTrackColor
             )
         )
         Text(
             text = "${(musicVolume.floatValue * 100).toInt()}%",
-            color = Color.White,
+            color = White,
             modifier = Modifier.align(Alignment.End)
         )
     }

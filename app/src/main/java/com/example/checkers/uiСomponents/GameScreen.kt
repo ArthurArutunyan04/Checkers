@@ -19,6 +19,11 @@ import com.example.checkers.R
 import com.example.checkers.gamelogic.AnimatedPiece
 import com.example.checkers.gamelogic.GameLogic
 import com.example.checkers.gamelogic.GameState
+import com.example.checkers.ui.theme.ButtonDefaultsColor
+import com.example.checkers.ui.theme.Field
+import com.example.checkers.ui.theme.Green
+import com.example.checkers.ui.theme.TopBarColor
+import com.example.checkers.ui.theme.White
 
 @Composable
 fun GameScreen(
@@ -38,8 +43,8 @@ fun GameScreen(
             .background(
                 brush = Brush.radialGradient(
                     colors = listOf(
-                        Color(0xFF3A2A24),
-                        Color(0xFF12140F)
+                        Green,
+                        Field
                     ),
                     radius = 800f
                 )
@@ -123,7 +128,7 @@ fun GameScreen(
                         .width(300.dp)
                         .padding(16.dp),
                     shape = RoundedCornerShape(8.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFF2E211C))
+                    colors = CardDefaults.cardColors(containerColor = TopBarColor)
                 ) {
                     Column(
                         modifier = Modifier
@@ -136,7 +141,7 @@ fun GameScreen(
                             text = stringResource(R.string.game_paused),
                             fontWeight = FontWeight.Bold,
                             fontSize = 20.sp,
-                            color = Color.White
+                            color = White
                         )
 
                         Spacer(modifier = Modifier.height(16.dp))
@@ -145,18 +150,18 @@ fun GameScreen(
                                 gameState.paused.value = false
                                 onResume()
                             },
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4A3728))
+                            colors = ButtonDefaults.buttonColors(containerColor = ButtonDefaultsColor)
                         ) {
                             Text(
                                 text = stringResource(R.string.resume_game),
-                                color = Color.White
+                                color = White
                             )
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         TextButton(onClick = onExit) {
                             Text(
                                 text = stringResource(R.string.exit_game),
-                                color = Color.White
+                                color = White
                             )
                         }
                     }

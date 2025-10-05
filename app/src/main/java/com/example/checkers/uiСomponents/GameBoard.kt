@@ -29,6 +29,12 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.style.TextAlign
 import com.example.checkers.gamelogic.AnimatedPiece
 import com.example.checkers.gamelogic.animatePiecePosition
+import com.example.checkers.ui.theme.Beige
+import com.example.checkers.ui.theme.Black
+import com.example.checkers.ui.theme.DarkBrow
+import com.example.checkers.ui.theme.DarkOrange
+import com.example.checkers.ui.theme.GridBack
+import com.example.checkers.ui.theme.White
 
 @Composable
 fun GameBoard(
@@ -50,9 +56,9 @@ fun GameBoard(
             .background(
                 brush = Brush.radialGradient(
                     colors = listOf(
-                        Color(0xFFD7B899),
-                        Color(0xFF8B5A2B),
-                        Color(0xFF5C4033)
+                        Beige,
+                        DarkOrange,
+                        DarkBrow
                     ),
                     radius = 600f
                 )
@@ -115,11 +121,11 @@ fun GameBoard(
                         columns = GridCells.Fixed(count = 8),
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(Color(0xFF1E1714)),
+                            .background(GridBack),
                         content = {
                             items(count = 64) { index ->
                                 val isBlack = (index / 8 + index % 8) % 2 != 0
-                                val cellColor = if (isBlack) Color.Black else Color.White
+                                val cellColor = if (isBlack) Black else White
                                 val isSelected = index == selectedCell && !isGameOver
                                 val isPossible = index in possibleMoves && !isGameOver
 

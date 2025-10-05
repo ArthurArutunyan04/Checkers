@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
@@ -25,13 +26,15 @@ import com.example.checkers.R
 import com.example.checkers.activities.GameActivity
 import com.example.checkers.activities.SettingsActivity
 import com.example.checkers.activities.StateActivity
+import com.example.checkers.ui.theme.Field
+import com.example.checkers.ui.theme.TopBarColor
 
 @Composable
 fun ButtonPanel() {
     val context = LocalContext.current
     val view = LocalView.current
     val window = (view.context as? Activity)?.window
-    val navBarColor = 0xFF2E211C.toInt()
+    val navBarColor = Field.toArgb()
 
     window?.let {
         it.navigationBarColor = navBarColor
@@ -41,7 +44,7 @@ fun ButtonPanel() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFF2E211C))
+            .background(TopBarColor)
             .padding(16.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {

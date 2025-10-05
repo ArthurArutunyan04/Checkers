@@ -22,6 +22,7 @@ import com.example.checkers.gamelogic.initializeAppLanguage
 import com.example.checkers.ui.theme.CheckersTheme
 import com.example.checkers.uiСomponents.ButtonPanel
 import com.example.checkers.uiСomponents.SettingPanel
+import com.example.checkers.uiСomponents.SettingScreen
 import com.example.checkers.uiСomponents.TopPanel
 
 class SettingsActivity : ComponentActivity() {
@@ -39,29 +40,5 @@ class SettingsActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-@Composable
-fun SettingScreen(innerPadding: PaddingValues) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.radialGradient(
-                    colors = listOf(
-                        Color(0xFF3A2A24),
-                        Color(0xFF12140F)
-                    ),
-                    center = Offset.Unspecified,
-                    radius = 800f
-                )
-            )
-            .padding(innerPadding),
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        TopPanel(title = stringResource(R.string.settings))
-        SettingPanel()
-        ButtonPanel()
     }
 }

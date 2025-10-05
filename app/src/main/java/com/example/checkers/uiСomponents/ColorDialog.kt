@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
@@ -40,14 +41,20 @@ import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.checkers.R
 import com.example.checkers.gamelogic.PlayerColor
+import com.example.checkers.ui.theme.Black
 import com.example.checkers.ui.theme.Colus
+import com.example.checkers.ui.theme.Field
+import com.example.checkers.ui.theme.GrayDef
+import com.example.checkers.ui.theme.Green
+import com.example.checkers.ui.theme.LightWhite
+import com.example.checkers.ui.theme.White
 
 @Composable
 fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
     val view = LocalView.current
     val context = LocalContext.current
     val window = (view.context as? Activity)?.window
-    val statusBarColor = 0xFF2E211C.toInt()
+    val statusBarColor = Field.toArgb()
 
     window?.let {
         it.statusBarColor = statusBarColor
@@ -79,8 +86,8 @@ fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
                 .background(
                     brush = Brush.radialGradient(
                         colors = listOf(
-                            Color(0xFF3A2A24),
-                            Color(0xFF12140F)
+                            Field,
+                            Green
                         ),
                         radius = 800f
                     )
@@ -95,7 +102,7 @@ fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
             ) {
                 Column(
                     modifier = Modifier
-                        .background(Color(0xFF2E211C))
+                        .background(Field)
                         .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -105,7 +112,7 @@ fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
                         fontWeight = FontWeight.Bold,
                         fontFamily = Colus,
                         textAlign = TextAlign.Center,
-                        color = Color.White,
+                        color = White,
                         modifier = Modifier.padding(bottom = 16.dp)
                     )
 
@@ -122,10 +129,10 @@ fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
                                 .height(80.dp)
                                 .clickable { onSelect(PlayerColor.WHITE) }
                                 .background(
-                                    color = Color(0xFFF5F5F5),
+                                    color = LightWhite,
                                     shape = RoundedCornerShape(8.dp)
                                 )
-                                .border(1.dp, Color.Gray, RoundedCornerShape(8.dp)),
+                                .border(1.dp, GrayDef, RoundedCornerShape(8.dp)),
                             contentAlignment = Alignment.Center
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -140,7 +147,7 @@ fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Medium,
                                     fontFamily = Colus,
-                                    color = Color.Black
+                                    color = Black
                                 )
                             }
                         }
@@ -170,7 +177,7 @@ fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Medium,
                                     fontFamily = Colus,
-                                    color = Color.White
+                                    color = White
                                 )
                             }
                         }
@@ -185,8 +192,8 @@ fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
                             .padding(vertical = 4.dp),
                         shape = RoundedCornerShape(8.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF12140F),
-                            contentColor = Color.White
+                            containerColor = Field,
+                            contentColor = White
                         )
                     ) {
                         Text(

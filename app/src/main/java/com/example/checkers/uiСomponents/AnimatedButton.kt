@@ -11,6 +11,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.checkers.ui.theme.Colus
 import com.example.checkers.ui.theme.Field
+import com.example.checkers.ui.theme.Transparent
+import com.example.checkers.ui.theme.White
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
@@ -50,7 +52,7 @@ fun AnimatedButton(
 
     Surface(
         onClick = onClick,
-        color = Color.Transparent,
+        color = Transparent,
     ) {
         Column(
             modifier = Modifier
@@ -65,13 +67,13 @@ fun AnimatedButton(
                     .weight(1f)
                     .offset(x = iconOffsetX)
                     .rotate(iconAngle)
-                    .background(color = Field),
+                    .background(Field),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = icon,
                     contentDescription = text,
-                    tint = Color.White,
+                    tint = White,
                     modifier = Modifier.size(28.dp)
                 )
             }
@@ -82,14 +84,14 @@ fun AnimatedButton(
                     .weight(0.5f)
                     .offset(x = textOffsetX)
                     .rotate(textAngle)
-                    .background(color = Field),
+                    .background(Field),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = text,
                     fontFamily = Colus,
                     fontSize = 13.sp,
-                    color = Color.White,
+                    color = White,
                     modifier = Modifier.rotate(-textAngle)
                 )
             }

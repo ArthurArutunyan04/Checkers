@@ -23,6 +23,7 @@ import com.example.checkers.uiСomponents.GameBoard
 import com.example.checkers.uiСomponents.TopPanel
 import com.example.checkers.gamelogic.generateInitialPieces
 import com.example.checkers.gamelogic.initializeAppLanguage
+import com.example.checkers.uiСomponents.MainScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,29 +41,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-@Composable
-fun MainScreen(innerPadding: PaddingValues, pieces: Map<Int, Int>) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.radialGradient(
-                    colors = listOf(
-                        Color(0xFF3A2A24),
-                        Color(0xFF12140F)
-                    ),
-                    center = Offset.Unspecified,
-                    radius = 800f
-                )
-            )
-            .padding(innerPadding),
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        TopPanel("Checkers")
-        GameBoard(pieces = pieces)
-        ButtonPanel()
     }
 }

@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.sp
 import com.example.checkers.R
 import com.example.checkers.gamelogic.GameState
 import com.example.checkers.ui.theme.Colus
+import com.example.checkers.ui.theme.TopBarColor
+import com.example.checkers.ui.theme.White
 
 @Composable
 fun BottomGamePanel(gameState: GameState) {
@@ -38,15 +40,18 @@ fun BottomGamePanel(gameState: GameState) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .background(Color(0xFF2E211C)),
+            .background(TopBarColor),
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(Color(0xFF2E211C))
+        colors = CardDefaults.cardColors(
+            containerColor = TopBarColor,
+            contentColor = White
+        )
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp)
-                .background(Color(0xFF2E211C)),
+                .background(TopBarColor),
         ) {
             Row(
                 modifier = Modifier
@@ -59,7 +64,7 @@ fun BottomGamePanel(gameState: GameState) {
                     fontSize = 16.sp,
                     fontFamily = Colus,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = White
                 )
             }
             LazyColumn(
@@ -73,7 +78,7 @@ fun BottomGamePanel(gameState: GameState) {
                         text = gameState.historyLog[index],
                         fontSize = 14.sp,
                         fontFamily = Colus,
-                        color = Color.White,
+                        color = White,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                 }
