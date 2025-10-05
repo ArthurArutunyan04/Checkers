@@ -79,11 +79,16 @@ object GameLogic {
         val isWhite = pieceColor == PlayerColor.WHITE
         val isKing = fromPiece == R.drawable.white_win || fromPiece == R.drawable.black_win
 
+        if (!isKing && abs(rowDiff) != 1) {
+            return false
+        }
+
         if (abs(rowDiff) > 1) {
             val stepRow = if (rowDiff > 0) 1 else -1
             val stepCol = if (colDiff > 0) 1 else -1
             var currentRow = fromRow + stepRow
             var currentCol = fromCol + stepCol
+
             while (currentRow != toRow && currentCol != toCol) {
                 val currentIndex = currentRow * 8 + currentCol
                 if (!state.isValidCell(currentIndex) || state.board[currentIndex] != null) {
@@ -94,8 +99,8 @@ object GameLogic {
             }
         }
 
-        val valid = if (isKing) true else if (isWhite) rowDiff < 0 else rowDiff > 0
-        return valid
+        val validDirection = if (isKing) true else if (isWhite) rowDiff < 0 else rowDiff > 0
+        return validDirection
     }
 
     fun isValidCapture(state: GameState, fromIndex: Int, toIndex: Int): Boolean {
@@ -170,14 +175,10 @@ object GameLogic {
 
         val hasGlobalCaptures = hasMandatoryCaptures(state)
 
-        val directions = if (isKing) {
-            listOf(-1 to -1, -1 to 1, 1 to -1, 1 to 1)
-        } else {
-            listOf(-1 to -1, -1 to 1, 1 to -1, 1 to 1)
-        }
-
-        for ((drow, dcol) in directions) {
-            for (dist in 2..7) {
+        val captureDirections = listOf(-1 to -1, -1 to 1, 1 to -1, 1 to 1)
+        for ((drow, dcol) in captureDirections) {
+            val maxDist = if (isKing) 7 else 2
+            for (dist in 2..maxDist) {
                 val toRow = fromRow + drow * dist
                 val toCol = fromCol + dcol * dist
                 if (toRow < 0 || toRow > 7 || toCol < 0 || toCol > 7) break
@@ -197,8 +198,10 @@ object GameLogic {
             } else {
                 listOf(1 to -1, 1 to 1)
             }
+
             for ((drow, dcol) in moveDirections) {
-                for (dist in 1..7) {
+                val maxDist = if (isKing) 7 else 1
+                for (dist in 1..maxDist) {
                     val toRow = fromRow + drow * dist
                     val toCol = fromCol + dcol * dist
                     if (toRow < 0 || toRow > 7 || toCol < 0 || toCol > 7) break
