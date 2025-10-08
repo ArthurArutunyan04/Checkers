@@ -5,18 +5,27 @@ import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarData
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -53,7 +62,10 @@ fun AuthScreen(viewModel: AuthViewModel) {
     LaunchedEffect(Unit) {
         viewModel.snackbarEvent.collect { message ->
             scope.launch {
-                snackbarHostState.showSnackbar(message)
+                snackbarHostState.showSnackbar(
+                    message = message,
+                    duration = SnackbarDuration.Short
+                )
             }
         }
     }
@@ -63,6 +75,7 @@ fun AuthScreen(viewModel: AuthViewModel) {
             .fillMaxSize()
             .background(TopBarColor)
     ) {
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -74,6 +87,8 @@ fun AuthScreen(viewModel: AuthViewModel) {
                 else if (authState.isLoginMode) stringResource(R.string.login_title)
                 else stringResource(R.string.register_title)
             )
+
+            Spacer(modifier = Modifier.height(64.dp))
 
             Card(
                 modifier = Modifier
@@ -121,7 +136,7 @@ fun AuthScreen(viewModel: AuthViewModel) {
                         OutlinedTextField(
                             value = authState.username,
                             onValueChange = { viewModel.updateUsername(it) },
-                            label = { Text(stringResource(R.string.username_label), color = White, fontFamily = Colus) },
+                            label = { Text(stringResource(R.string.username_label), color = White) },
                             isError = authState.usernameError != null,
                             supportingText = {
                                 if (authState.usernameError != null) {
@@ -133,14 +148,13 @@ fun AuthScreen(viewModel: AuthViewModel) {
                                 .padding(bottom = 8.dp),
                             textStyle = androidx.compose.ui.text.TextStyle(
                                 color = White,
-                                fontFamily = Colus
                             )
                         )
 
                         OutlinedTextField(
                             value = authState.password,
                             onValueChange = { viewModel.updatePassword(it) },
-                            label = { Text(stringResource(R.string.password_label), color = White, fontFamily = Colus) },
+                            label = { Text(stringResource(R.string.password_label), color = White) },
                             isError = authState.passwordError != null,
                             supportingText = {
                                 if (authState.passwordError != null) {
@@ -152,7 +166,6 @@ fun AuthScreen(viewModel: AuthViewModel) {
                                 .padding(bottom = 8.dp),
                             textStyle = androidx.compose.ui.text.TextStyle(
                                 color = White,
-                                fontFamily = Colus
                             )
                         )
 
@@ -225,8 +238,36 @@ fun AuthScreen(viewModel: AuthViewModel) {
         SnackbarHost(
             hostState = snackbarHostState,
             modifier = Modifier
-                .align(Alignment.BottomCenter)
+                .align(Alignment.TopCenter)
                 .padding(16.dp)
+                .padding(top = 54.dp),
+            snackbar = { snackbarData ->
+                Snackbar(
+                    modifier = Modifier.padding(top = 16.dp),
+                    containerColor = Field,
+                    contentColor = White,
+                    content = {
+                        Text(
+                            text = snackbarData.visuals.message,
+                            fontFamily = Colus,
+                            color = White
+                        )
+                    },
+                    action = {
+                        snackbarData.visuals.actionLabel?.let { actionLabel ->
+                            TextButton(
+                                onClick = { snackbarData.performAction() }
+                            ) {
+                                Text(
+                                    text = actionLabel,
+                                    fontFamily = Colus,
+                                    color = White
+                                )
+                            }
+                        }
+                    }
+                )
+            }
         )
     }
 }
