@@ -81,6 +81,7 @@
     <string name="creeps_killed">Крипов добито:</string>
     <string name="mage_creeps_created">Крипов-магов создано:</string>
 
+    <!-- Settings -->
     <string name="language">Язык</string>
     <string name="sound_volume">Громкость звуков</string>
     <string name="music_volume">Громкость музыки</string>
@@ -88,4 +89,29 @@
     <string name="english">English</string>
     <string name="back">Назад</string>
 
+    <!-- AuthViewModel -->
+    <string name="username_empty_error">Имя пользователя не может быть пустым</string>
+    <string name="username_length_error">Имя пользователя должно содержать не менее 3 символов</string>
+    <string name="password_empty_error">Пароль не может быть пустым</string>
+    <string name="password_length_error">Пароль должен содержать не менее 6 символов</string>
+    <string name="login_success">Вход выполнен успешно</string>
+    <string name="invalid_credentials">Неверное имя пользователя или пароль</string>
+    <string name="username_exists_error">Имя пользователя уже существует</string>
+    <string name="registration_success">Регистрация прошла успешно</string>
+    <string name="logout_success">Выход выполнен успешно</string>
+    <string name="default_username">Пользователь</string>
+
+    <!-- AuthScreen strings -->
+    <string name="account_title">Аккаунт</string>
+    <string name="login_title">Вход</string>
+    <string name="register_title">Регистрация</string>
+    <string name="welcome_message">Добро пожаловать, %s!</string>
+    <string name="username_label">Имя пользователя</string>
+    <string name="password_label">Пароль</string>
+    <string name="switch_to_register_button">Перейти к регистрации</string>
+    <string name="switch_to_login_button">Перейти к входу</string>
+    <string name="login_button">Войти</string>
+    <string name="register_button">Зарегистрироваться</string>
+    <string name="logout_button">Выйти</string>
+    <string name="back_button">Назад</string>
 </resources>

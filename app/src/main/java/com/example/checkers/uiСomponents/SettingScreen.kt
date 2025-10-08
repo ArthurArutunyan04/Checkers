@@ -1,5 +1,6 @@
 package com.example.checkers.uiСomponents
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,14 +12,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.example.checkers.R
+import com.example.checkers.activities.AuthActivity
 import com.example.checkers.ui.theme.Field
 import com.example.checkers.ui.theme.Green
 
 
 @Composable
 fun SettingScreen(innerPadding: PaddingValues) {
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -35,7 +40,10 @@ fun SettingScreen(innerPadding: PaddingValues) {
             .padding(innerPadding),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        TopPanel(title = stringResource(R.string.settings))
+        TopPanel(title = stringResource(R.string.settings), onAuthClick = {
+            val intent = Intent(context, AuthActivity::class.java)
+            context.startActivity(intent)
+        })
         SettingPanel()
         ButtonPanel()
     }
