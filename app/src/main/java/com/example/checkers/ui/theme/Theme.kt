@@ -1,15 +1,11 @@
 package com.example.checkers.ui.theme
 
-import android.os.Build
 import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import com.example.checkers.gamelogic.ThemeMode
 
 private val DarkColorScheme = darkColorScheme(
@@ -46,13 +42,12 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun CheckersTheme(
-    themeMode: ThemeMode = ThemeMode.SYSTEM,
+    themeMode: ThemeMode = ThemeMode.DARK,
     content: @Composable () -> Unit
 ) {
     val isDarkTheme = when (themeMode) {
         ThemeMode.LIGHT -> false
         ThemeMode.DARK -> true
-        ThemeMode.SYSTEM -> isSystemInDarkTheme()
     }
     Log.d("CheckersTheme", "Applying theme: $themeMode, isDarkTheme: $isDarkTheme")
 

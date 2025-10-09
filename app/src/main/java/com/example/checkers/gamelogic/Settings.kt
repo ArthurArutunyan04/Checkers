@@ -1,17 +1,18 @@
 package com.example.checkers.gamelogic
 
 import android.content.Context
-import android.content.res.Configuration
 import android.util.Log
+import androidx.compose.runtime.Composable
 import com.example.checkers.R
+import com.example.checkers.ui.theme.LocalLanguage
 import java.util.Locale
+
 
 private const val PREFS_NAME = "app_settings"
 private const val KEY_LANGUAGE = "language"
 private const val KEY_SOUND_VOLUME = "sound_volume"
 private const val KEY_MUSIC_VOLUME = "music_volume"
 private const val KEY_THEME_MODE = "theme_mode"
-
 
 fun saveLanguage(context: Context, languageCode: String) {
     val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -21,7 +22,7 @@ fun saveLanguage(context: Context, languageCode: String) {
 
 fun getSavedLanguage(context: Context): String {
     val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-    val language = prefs.getString(KEY_LANGUAGE, getCurrentLanguage(context)) ?: getCurrentLanguage(context)
+    val language = prefs.getString(KEY_LANGUAGE, Locale.getDefault().language) ?: Locale.getDefault().language
     Log.d("Preferences", "Retrieved language: $language")
     return language
 }
@@ -56,66 +57,26 @@ fun saveThemeMode(context: Context, themeMode: ThemeMode) {
     val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     prefs.edit().putString(KEY_THEME_MODE, themeMode.name).apply()
     Log.d("Preferences", "Saved theme mode: ${themeMode.name}")
+    Log.d("Preferences", "Verified saved theme mode: ${prefs.getString(KEY_THEME_MODE, null)}")
 }
 
 fun getSavedThemeMode(context: Context): ThemeMode {
     val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-    val mode = prefs.getString(KEY_THEME_MODE, ThemeMode.SYSTEM.name)
+    val mode = prefs.getString(KEY_THEME_MODE, ThemeMode.DARK.name)
     val themeMode = try {
-        ThemeMode.valueOf(mode ?: ThemeMode.SYSTEM.name)
+        ThemeMode.valueOf(mode ?: ThemeMode.DARK.name)
     } catch (e: IllegalArgumentException) {
-        ThemeMode.SYSTEM
+        ThemeMode.DARK
     }
     Log.d("Preferences", "Retrieved theme mode: $themeMode")
     return themeMode
 }
 
-fun getCurrentLanguage(context: Context): String {
-    val config = context.resources.configuration
-    val language = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-        config.locales[0].language
-    } else {
-        config.locale.language
-    }
-    Log.d("Preferences", "Current system language: $language")
-    return language
-}
-
+@Composable
 fun getCurrentLanguageDisplayName(context: Context): String {
-    val savedLang = getSavedLanguage(context)
+    val savedLang = LocalLanguage.current.languageCode
     return when (savedLang) {
-        "ru" -> context.getString(R.string.russian)
-        else -> context.getString(R.string.english)
-    }
-}
-
-fun setAppLanguage(context: Context, languageCode: String) {
-    val locale = Locale(languageCode)
-    Locale.setDefault(locale)
-
-    val resources = context.resources
-    val configuration = Configuration(resources.configuration)
-    configuration.setLocale(locale)
-
-    resources.updateConfiguration(configuration, resources.displayMetrics)
-
-    saveLanguage(context, languageCode)
-    Log.d("Preferences", "Set app language: $languageCode")
-}
-
-fun getLocalizedString(key: String, context: Context): String {
-    return when (key) {
-        "language" -> context.getString(R.string.language)
-        "sound_volume" -> context.getString(R.string.sound_volume)
-        "music_volume" -> context.getString(R.string.music_volume)
-        "theme_mode" -> context.getString(R.string.theme_mode)
-        else -> key
-    }
-}
-
-fun initializeAppLanguage(context: Context) {
-    val savedLanguage = getSavedLanguage(context)
-    if (savedLanguage != getCurrentLanguage(context)) {
-        setAppLanguage(context, savedLanguage)
+        "ru" -> LocalLanguage.current.getLocalizedString(context, R.string.russian)
+        else -> LocalLanguage.current.getLocalizedString(context, R.string.english)
     }
 }

@@ -1,10 +1,13 @@
 package com.example.checkers.viewmodel
 
 import android.content.Context
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.checkers.R
+import com.example.checkers.ui.theme.LanguageState
+import com.example.checkers.ui.theme.LocalLanguage
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -46,21 +49,37 @@ class AuthViewModel : ViewModel() {
         )
     }
 
-    fun validateAndSubmit(context: Context): Boolean {
+    fun validateAndSubmit(context: Context, languageState: LanguageState): Boolean {
         val state = authState.value
         var isValid = true
         val usernameError: String?
         val passwordError: String?
 
         usernameError = when {
-            state.username.isBlank() -> context.getString(R.string.username_empty_error)
-            state.username.length < 3 -> context.getString(R.string.username_length_error)
+            state.username.isBlank() -> languageState.getLocalizedString(
+                context,
+                R.string.username_empty_error
+            )
+
+            state.username.length < 3 -> languageState.getLocalizedString(
+                context,
+                R.string.username_length_error
+            )
+
             else -> null
         }
 
         passwordError = when {
-            state.password.isBlank() -> context.getString(R.string.password_empty_error)
-            state.password.length < 6 -> context.getString(R.string.password_length_error)
+            state.password.isBlank() -> languageState.getLocalizedString(
+                context,
+                R.string.password_empty_error
+            )
+
+            state.password.length < 6 -> languageState.getLocalizedString(
+                context,
+                R.string.password_length_error
+            )
+
             else -> null
         }
 
@@ -85,12 +104,22 @@ class AuthViewModel : ViewModel() {
                 isLoggedIn.value = true
                 currentUsername.value = state.username
                 viewModelScope.launch {
-                    _snackbarEvent.emit(context.getString(R.string.login_success))
+                    _snackbarEvent.emit(
+                        languageState.getLocalizedString(
+                            context,
+                            R.string.login_success
+                        )
+                    )
                 }
             } else {
                 isValid = false
                 viewModelScope.launch {
-                    _snackbarEvent.emit(context.getString(R.string.invalid_credentials))
+                    _snackbarEvent.emit(
+                        languageState.getLocalizedString(
+                            context,
+                            R.string.invalid_credentials
+                        )
+                    )
                 }
             }
         } else {
@@ -98,10 +127,18 @@ class AuthViewModel : ViewModel() {
             if (savedUsername == state.username) {
                 isValid = false
                 authState.value = authState.value.copy(
-                    usernameError = context.getString(R.string.username_exists_error)
+                    usernameError = languageState.getLocalizedString(
+                        context,
+                        R.string.username_exists_error
+                    )
                 )
                 viewModelScope.launch {
-                    _snackbarEvent.emit(context.getString(R.string.username_exists_error))
+                    _snackbarEvent.emit(
+                        languageState.getLocalizedString(
+                            context,
+                            R.string.username_exists_error
+                        )
+                    )
                 }
             } else {
                 with(sharedPrefs.edit()) {
@@ -113,30 +150,59 @@ class AuthViewModel : ViewModel() {
                 isLoggedIn.value = true
                 currentUsername.value = state.username
                 viewModelScope.launch {
-                    _snackbarEvent.emit(context.getString(R.string.registration_success))
+                    _snackbarEvent.emit(
+                        languageState.getLocalizedString(
+                            context,
+                            R.string.registration_success
+                        )
+                    )
                 }
             }
         }
         return isValid
     }
 
-    fun logout(context: Context) {
+    fun logout(context: Context, languageState: LanguageState) {
         val sharedPrefs = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         with(sharedPrefs.edit()) {
             putBoolean("is_logged_in", false)
             apply()
         }
         isLoggedIn.value = false
-        currentUsername.value = sharedPrefs.getString("username", context.getString(R.string.default_username)) ?: context.getString(R.string.default_username)
+        currentUsername.value = sharedPrefs.getString(
+            "username",
+            languageState.getLocalizedString(context, R.string.default_username)
+        ) ?: languageState.getLocalizedString(context, R.string.default_username)
         authState.value = AuthState()
         viewModelScope.launch {
-            _snackbarEvent.emit(context.getString(R.string.logout_success))
+            _snackbarEvent.emit(languageState.getLocalizedString(context, R.string.logout_success))
         }
     }
 
-    fun loadInitialState(context: Context) {
+    fun loadInitialState(context: Context, languageState: LanguageState) {
         val sharedPrefs = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         isLoggedIn.value = sharedPrefs.getBoolean("is_logged_in", false)
-        currentUsername.value = sharedPrefs.getString("username", context.getString(R.string.default_username)) ?: context.getString(R.string.default_username)
+        currentUsername.value = sharedPrefs.getString(
+            "username",
+            languageState.getLocalizedString(context, R.string.default_username)
+        ) ?: languageState.getLocalizedString(context, R.string.default_username)
+    }
+
+    @Composable
+    fun validateAndSubmit(context: Context) {
+        val languageState = LocalLanguage.current
+        validateAndSubmit(context, languageState)
+    }
+
+    @Composable
+    fun logout(context: Context) {
+        val languageState = LocalLanguage.current
+        logout(context, languageState)
+    }
+
+    @Composable
+    fun loadInitialState(context: Context) {
+        val languageState = LocalLanguage.current
+        loadInitialState(context, languageState)
     }
 }

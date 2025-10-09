@@ -13,8 +13,12 @@ import com.example.checkers.gamelogic.Difficulty
 import com.example.checkers.gamelogic.GameLogic
 import com.example.checkers.gamelogic.GameState
 import com.example.checkers.gamelogic.PlayerColor
-import com.example.checkers.gamelogic.initializeAppLanguage
 import com.example.checkers.ui.theme.CheckersTheme
+import com.example.checkers.ui.theme.LanguageState
+import com.example.checkers.ui.theme.LocalLanguage
+import com.example.checkers.ui.theme.LocalThemeMode
+import com.example.checkers.ui.theme.ProvideLanguage
+import com.example.checkers.ui.theme.ProvideThemeMode
 import com.example.checkers.uiСomponents.ColorDialog
 import com.example.checkers.uiСomponents.CustomDifficultyDialog
 import com.example.checkers.uiСomponents.GameScreen
@@ -24,70 +28,78 @@ class GameActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initializeAppLanguage(this)
-
         setContent {
-            CheckersTheme {
-                val context = LocalContext.current
-                var gameState by remember { mutableStateOf<GameState?>(null) }
-                var showDifficultyDialog by remember { mutableStateOf(true) }
-                var showColorDialog by remember { mutableStateOf(false) }
-                var selectedDifficulty by remember { mutableStateOf<Difficulty?>(null) }
-                var animatedPiece by remember { mutableStateOf<AnimatedPiece?>(null) }
-                val coroutineScope = rememberCoroutineScope()
+            ProvideThemeMode(this) {
+                ProvideLanguage(this) {
+                    val themeMode = LocalThemeMode.current.themeMode
+                    val languageState = LocalLanguage.current
+                    CheckersTheme(themeMode = themeMode) {
+                        val context = LocalContext.current
+                        var gameState by remember { mutableStateOf<GameState?>(null) }
+                        var showDifficultyDialog by remember { mutableStateOf(true) }
+                        var showColorDialog by remember { mutableStateOf(false) }
+                        var selectedDifficulty by remember { mutableStateOf<Difficulty?>(null) }
+                        var animatedPiece by remember { mutableStateOf<AnimatedPiece?>(null) }
+                        val coroutineScope = rememberCoroutineScope()
 
-                if (showDifficultyDialog) {
-                    CustomDifficultyDialog(
-                        onSelect = { difficulty ->
-                            selectedDifficulty = difficulty
-                            showDifficultyDialog = false
-                            if (difficulty != Difficulty.DUEL) {
-                                showColorDialog = true
-                            } else {
-                                gameState = GameState(
-                                    context = context,
-                                    difficulty = difficulty,
-                                    playerColor = PlayerColor.WHITE
-                                ).apply { initializeBoard() }
-                            }
-                        },
-                        onDismiss = { finish() }
-                    )
-                } else if (showColorDialog && selectedDifficulty != null) {
-                    ColorDialog(
-                        onSelect = { color ->
-                            gameState = GameState(
-                                context = context,
-                                difficulty = selectedDifficulty!!,
-                                playerColor = color
-                            ).apply { initializeBoard() }
-                            showColorDialog = false
-                        },
-                        onDismiss = { finish() }
-                    )
-                } else if (gameState != null) {
-                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                        GameScreen(
-                            innerPadding = innerPadding,
-                            gameState = gameState!!,
-                            onCellClick = { index ->
-                                handleCellClick(gameState!!, index, { animated -> animatedPiece = animated }) {
-                                    coroutineScope.launch {
-                                        kotlinx.coroutines.delay(500)
-                                        GameLogic.aiMove(gameState!!)
+                        if (showDifficultyDialog) {
+                            CustomDifficultyDialog(
+                                onSelect = { difficulty ->
+                                    selectedDifficulty = difficulty
+                                    showDifficultyDialog = false
+                                    if (difficulty != Difficulty.DUEL) {
+                                        showColorDialog = true
+                                    } else {
+                                        gameState = GameState(
+                                            context = context,
+                                            difficulty = difficulty,
+                                            playerColor = PlayerColor.WHITE
+                                        ).apply { initializeBoard(languageState) }
                                     }
-                                }
-                            },
-                            onPause = { gameState!!.paused.value = true },
-                            onResume = { gameState!!.paused.value = false },
-                            onExit = { finish() },
-                            showTopPanel = true,
-                            animatedPiece = animatedPiece,
-                            onAnimationEnd = {
-                                println("Animation ended, resetting animatedPiece")
-                                animatedPiece = null
+                                },
+                                onDismiss = { finish() }
+                            )
+                        } else if (showColorDialog && selectedDifficulty != null) {
+                            ColorDialog(
+                                onSelect = { color ->
+                                    gameState = GameState(
+                                        context = context,
+                                        difficulty = selectedDifficulty!!,
+                                        playerColor = color
+                                    ).apply { initializeBoard(languageState) }
+                                    showColorDialog = false
+                                },
+                                onDismiss = { finish() }
+                            )
+                        } else if (gameState != null) {
+                            Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                                GameScreen(
+                                    innerPadding = innerPadding,
+                                    gameState = gameState!!,
+                                    onCellClick = { index ->
+                                        handleCellClick(
+                                            gameState!!,
+                                            index,
+                                            languageState,
+                                            { animated -> animatedPiece = animated }) {
+                                            coroutineScope.launch {
+                                                kotlinx.coroutines.delay(500)
+                                                GameLogic.aiMove(gameState!!)
+                                            }
+                                        }
+                                    },
+                                    onPause = { gameState!!.paused.value = true },
+                                    onResume = { gameState!!.paused.value = false },
+                                    onExit = { finish() },
+                                    showTopPanel = true,
+                                    animatedPiece = animatedPiece,
+                                    onAnimationEnd = {
+                                        println("Animation ended, resetting animatedPiece")
+                                        animatedPiece = null
+                                    }
+                                )
                             }
-                        )
+                        }
                     }
                 }
             }
@@ -97,6 +109,7 @@ class GameActivity : ComponentActivity() {
     private fun handleCellClick(
         state: GameState,
         index: Int,
+        languageState: LanguageState,
         setAnimatedPiece: (AnimatedPiece?) -> Unit,
         onAiMove: () -> Unit
     ) {
@@ -112,7 +125,7 @@ class GameActivity : ComponentActivity() {
         println("Cell clicked: $index, pieceColor=$pieceColor, currentPlayer=${state.currentPlayer}, selected=$selected")
 
         if (selected != null) {
-            val (success, animatedPiece) = GameLogic.performMove(state, selected, index)
+            val (success, animatedPiece) = GameLogic.performMove(state, selected, index, languageState)
             println("Move attempt: success=$success, animatedPiece=$animatedPiece")
             if (success) {
                 setAnimatedPiece(animatedPiece)

@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,15 +28,16 @@ import com.example.checkers.activities.GameActivity
 import com.example.checkers.activities.SettingsActivity
 import com.example.checkers.activities.StateActivity
 import com.example.checkers.ui.theme.Field
+import com.example.checkers.ui.theme.LocalLanguage
 import com.example.checkers.ui.theme.TopBarColor
 
 @Composable
 fun ButtonPanel() {
     val context = LocalContext.current
+    val languageState = LocalLanguage.current
     val view = LocalView.current
     val window = (view.context as? Activity)?.window
-    val navBarColor = Field.toArgb()
-
+    val navBarColor = MaterialTheme.colorScheme.secondaryContainer.toArgb()
     window?.let {
         it.navigationBarColor = navBarColor
         WindowInsetsControllerCompat(it, it.decorView).isAppearanceLightNavigationBars = false
@@ -44,12 +46,12 @@ fun ButtonPanel() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(TopBarColor)
+            .background(MaterialTheme.colorScheme.secondaryContainer)
             .padding(16.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         AnimatedButton(
-            text = stringResource(R.string.play),
+            text = languageState.getLocalizedString(context, R.string.play),
             icon = Icons.Filled.PlayArrow,
             onClick = {
                 val intent = Intent(context, GameActivity::class.java)
@@ -59,7 +61,7 @@ fun ButtonPanel() {
         )
 
         AnimatedButton(
-            text = stringResource(R.string.statistics),
+            text = languageState.getLocalizedString(context, R.string.statistics),
             icon = Icons.Filled.Info,
             onClick = {
                 val intent = Intent(context, StateActivity::class.java)
@@ -69,7 +71,7 @@ fun ButtonPanel() {
         )
 
         AnimatedButton(
-            text = stringResource(R.string.settings),
+            text = languageState.getLocalizedString(context, R.string.settings),
             icon = Icons.Filled.Settings,
             onClick = {
                  val intent = Intent(context, SettingsActivity::class.java)

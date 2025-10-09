@@ -8,32 +8,17 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -41,20 +26,16 @@ import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.checkers.R
 import com.example.checkers.gamelogic.PlayerColor
-import com.example.checkers.ui.theme.Black
 import com.example.checkers.ui.theme.Colus
-import com.example.checkers.ui.theme.Field
-import com.example.checkers.ui.theme.GrayDef
-import com.example.checkers.ui.theme.Green
-import com.example.checkers.ui.theme.LightWhite
-import com.example.checkers.ui.theme.White
+import com.example.checkers.ui.theme.LocalLanguage
 
 @Composable
 fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
     val view = LocalView.current
     val context = LocalContext.current
+    val languageState = LocalLanguage.current
     val window = (view.context as? Activity)?.window
-    val statusBarColor = Field.toArgb()
+    val statusBarColor = MaterialTheme.colorScheme.background.toArgb()
 
     window?.let {
         it.statusBarColor = statusBarColor
@@ -63,15 +44,15 @@ fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
 
     val getLocalizedPlayerColorName: @Composable (PlayerColor) -> String = { playerColor ->
         when (playerColor) {
-            PlayerColor.WHITE -> stringResource(R.string.forces_of_light)
-            PlayerColor.BLACK -> stringResource(R.string.forces_of_darkness)
+            PlayerColor.WHITE ->  languageState.getLocalizedString(context, R.string.forces_of_light)
+            PlayerColor.BLACK ->  languageState.getLocalizedString(context, R.string.forces_of_darkness)
         }
     }
 
     val getLocalizedPlayerColorDescription: @Composable (PlayerColor) -> String = { playerColor ->
         when (playerColor) {
-            PlayerColor.WHITE -> stringResource(R.string.forces_of_light_desc)
-            PlayerColor.BLACK -> stringResource(R.string.forces_of_darkness_desc)
+            PlayerColor.WHITE ->  languageState.getLocalizedString(context, R.string.forces_of_light_desc)
+            PlayerColor.BLACK ->  languageState.getLocalizedString(context, R.string.forces_of_darkness_desc)
         }
     }
 
@@ -86,8 +67,8 @@ fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
                 .background(
                     brush = Brush.radialGradient(
                         colors = listOf(
-                            Field,
-                            Green
+                            MaterialTheme.colorScheme.background,
+                            MaterialTheme.colorScheme.tertiary
                         ),
                         radius = 800f
                     )
@@ -98,21 +79,23 @@ fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
                 modifier = Modifier
                     .width(320.dp)
                     .padding(16.dp),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.background
+                )
             ) {
                 Column(
                     modifier = Modifier
-                        .background(Field)
                         .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = stringResource(R.string.choose_piece_color),
+                        text =  languageState.getLocalizedString(context, R.string.choose_piece_color),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = Colus,
                         textAlign = TextAlign.Center,
-                        color = White,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
                         modifier = Modifier.padding(bottom = 16.dp)
                     )
 
@@ -129,10 +112,10 @@ fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
                                 .height(80.dp)
                                 .clickable { onSelect(PlayerColor.WHITE) }
                                 .background(
-                                    color = LightWhite,
+                                    color = MaterialTheme.colorScheme.surface,
                                     shape = RoundedCornerShape(8.dp)
                                 )
-                                .border(1.dp, GrayDef, RoundedCornerShape(8.dp)),
+                                .border(1.dp, MaterialTheme.colorScheme.onSurface, RoundedCornerShape(8.dp)),
                             contentAlignment = Alignment.Center
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -147,7 +130,7 @@ fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Medium,
                                     fontFamily = Colus,
-                                    color = Black
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                             }
                         }
@@ -159,10 +142,10 @@ fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
                                 .height(80.dp)
                                 .clickable { onSelect(PlayerColor.BLACK) }
                                 .background(
-                                    color = Color(0xFF212121),
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     shape = RoundedCornerShape(8.dp)
                                 )
-                                .border(1.dp, Color.DarkGray, RoundedCornerShape(8.dp)),
+                                .border(1.dp, MaterialTheme.colorScheme.onSurfaceVariant, RoundedCornerShape(8.dp)),
                             contentAlignment = Alignment.Center
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -177,7 +160,7 @@ fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Medium,
                                     fontFamily = Colus,
-                                    color = White
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer
                                 )
                             }
                         }
@@ -192,12 +175,12 @@ fun ColorDialog(onSelect: (PlayerColor) -> Unit, onDismiss: () -> Unit) {
                             .padding(vertical = 4.dp),
                         shape = RoundedCornerShape(8.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Field,
-                            contentColor = White
+                            containerColor = MaterialTheme.colorScheme.background,
+                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                     ) {
                         Text(
-                            text = stringResource(R.string.cancel),
+                            text =  languageState.getLocalizedString(context, R.string.cancel),
                             fontSize = 16.sp,
                             fontFamily = Colus,
                             fontWeight = FontWeight.Medium

@@ -7,29 +7,29 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import com.example.checkers.R
 import com.example.checkers.activities.AuthActivity
-import com.example.checkers.ui.theme.Field
-import com.example.checkers.ui.theme.Green
+import com.example.checkers.ui.theme.LocalLanguage
 
 @Composable
 fun StateScreen(innerPadding: PaddingValues) {
     val context = LocalContext.current
+    val languageState = LocalLanguage.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(
                 brush = Brush.radialGradient(
                     colors = listOf(
-                        Green,
-                        Field
+                        MaterialTheme.colorScheme.tertiary,
+                        MaterialTheme.colorScheme.background
                     ),
                     center = Offset.Unspecified,
                     radius = 800f
@@ -38,7 +38,7 @@ fun StateScreen(innerPadding: PaddingValues) {
             .padding(innerPadding),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        TopPanel(title = stringResource(R.string.statistics), onAuthClick = {
+        TopPanel(title = languageState.getLocalizedString(context, R.string.statistics), onAuthClick = {
             val intent = Intent(context, AuthActivity::class.java)
             context.startActivity(intent)
         })

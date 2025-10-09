@@ -14,26 +14,30 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.checkers.R
 import com.example.checkers.activities.MainActivity
 import com.example.checkers.gamelogic.*
-import com.example.checkers.ui.theme.*
+import com.example.checkers.ui.theme.Colus
+import com.example.checkers.ui.theme.LocalLanguage
+import com.example.checkers.ui.theme.LocalThemeMode
 
 @Composable
 fun SettingPanel() {
     val context = LocalContext.current
+    val themeModeState = LocalThemeMode.current
+    val languageState = LocalLanguage.current
     val themeMode = remember { mutableStateOf(getSavedThemeMode(context)) }
-    Log.d("SettingPanel", "Initial theme mode: ${themeMode.value}")
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         shape = RoundedCornerShape(15.dp),
-        colors = CardDefaults.cardColors(TopBarColor)
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer
+        )
     ) {
         Column(
             modifier = Modifier
@@ -48,33 +52,28 @@ fun SettingPanel() {
             Button(
                 onClick = {
                     val newTheme = when (themeMode.value) {
-                        ThemeMode.SYSTEM -> ThemeMode.LIGHT
                         ThemeMode.LIGHT -> ThemeMode.DARK
-                        ThemeMode.DARK -> ThemeMode.SYSTEM
+                        ThemeMode.DARK -> ThemeMode.LIGHT
                     }
                     Log.d("SettingPanel", "Switching to theme: $newTheme")
                     themeMode.value = newTheme
                     saveThemeMode(context, newTheme)
-                    (context as? Activity)?.let {
-                        Log.d("SettingPanel", "Recreating activity")
-                        it.recreate()
-                    } ?: Log.e("SettingPanel", "Context is not an Activity")
+                    themeModeState.themeMode = newTheme
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Field,
-                    contentColor = White
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             ) {
                 Text(
-                    text = "${getLocalizedString("theme_mode", context)}: ${
+                    text = "${languageState.getLocalizedString(context, R.string.theme_mode)}: ${
                         when (themeMode.value) {
-                            ThemeMode.SYSTEM -> stringResource(R.string.system_theme)
-                            ThemeMode.LIGHT -> stringResource(R.string.light_theme)
-                            ThemeMode.DARK -> stringResource(R.string.dark_theme)
+                            ThemeMode.LIGHT -> languageState.getLocalizedString(context, R.string.light_theme)
+                            ThemeMode.DARK -> languageState.getLocalizedString(context, R.string.dark_theme)
                         }
                     }",
                     fontSize = 16.sp,
@@ -94,12 +93,12 @@ fun SettingPanel() {
                     .padding(vertical = 4.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = TopBarColor,
-                    contentColor = White
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             ) {
                 Text(
-                    text = stringResource(R.string.back),
+                    text = languageState.getLocalizedString(context, R.string.back),
                     fontSize = 16.sp,
                     fontFamily = Colus
                 )
@@ -111,18 +110,14 @@ fun SettingPanel() {
 @Composable
 fun LanguageSwitchButton() {
     val context = LocalContext.current
-    val currentLang = remember { getSavedLanguage(context) }
+    val languageState = LocalLanguage.current
 
     Button(
         onClick = {
-            val newLang = if (currentLang == "ru") "en" else "ru"
+            val newLang = if (languageState.languageCode == "ru") "en" else "ru"
             Log.d("SettingPanel", "Switching language to: $newLang")
             saveLanguage(context, newLang)
-            setAppLanguage(context, newLang)
-            (context as? Activity)?.let {
-                Log.d("SettingPanel", "Recreating activity for language change")
-                it.recreate()
-            } ?: Log.e("SettingPanel", "Context is not an Activity")
+            languageState.updateLanguage(newLang)
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -130,12 +125,13 @@ fun LanguageSwitchButton() {
             .aspectRatio(4f),
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Field
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
     ) {
         Text(
-            text = "${getLocalizedString("language", context)}: ${getCurrentLanguageDisplayName(context)}",
-            color = White
+            text = "${languageState.getLocalizedString(context, R.string.language)}: ${getCurrentLanguageDisplayName(context)}",
+            color = MaterialTheme.colorScheme.onPrimaryContainer
         )
     }
 }
@@ -143,6 +139,7 @@ fun LanguageSwitchButton() {
 @Composable
 fun SoundVolumeSlider() {
     val context = LocalContext.current
+    val languageState = LocalLanguage.current
     val savedVolume = getSavedSoundVolume(context)
     val soundVolume = remember { mutableFloatStateOf(savedVolume) }
 
@@ -152,8 +149,8 @@ fun SoundVolumeSlider() {
             .padding(horizontal = 8.dp, vertical = 12.dp)
     ) {
         Text(
-            text = "🔊 ${getLocalizedString("sound_volume", context)}",
-            color = White,
+            text = "🔊 ${languageState.getLocalizedString(context, R.string.sound_volume)}",
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         Slider(
@@ -164,14 +161,14 @@ fun SoundVolumeSlider() {
             },
             modifier = Modifier.fillMaxWidth(),
             colors = SliderDefaults.colors(
-                thumbColor = ThumbColor,
-                activeTrackColor = ActiveTrackColor,
-                inactiveTrackColor = InactiveTrackColor
+                thumbColor = MaterialTheme.colorScheme.primary,
+                activeTrackColor = MaterialTheme.colorScheme.primary,
+                inactiveTrackColor = MaterialTheme.colorScheme.surfaceVariant
             )
         )
         Text(
             text = "${(soundVolume.floatValue * 100).toInt()}%",
-            color = White,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.align(Alignment.End)
         )
     }
@@ -180,6 +177,7 @@ fun SoundVolumeSlider() {
 @Composable
 fun MusicVolumeSlider() {
     val context = LocalContext.current
+    val languageState = LocalLanguage.current
     val savedVolume = getSavedMusicVolume(context)
     val musicVolume = remember { mutableFloatStateOf(savedVolume) }
 
@@ -189,8 +187,8 @@ fun MusicVolumeSlider() {
             .padding(horizontal = 8.dp, vertical = 12.dp)
     ) {
         Text(
-            text = "🎵 ${getLocalizedString("music_volume", context)}",
-            color = White,
+            text = "🎵 ${languageState.getLocalizedString(context, R.string.music_volume)}",
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         Slider(
@@ -201,14 +199,14 @@ fun MusicVolumeSlider() {
             },
             modifier = Modifier.fillMaxWidth(),
             colors = SliderDefaults.colors(
-                thumbColor = ThumbColor,
-                activeTrackColor = ActiveTrackColor,
-                inactiveTrackColor = InactiveTrackColor
+                thumbColor = MaterialTheme.colorScheme.primary,
+                activeTrackColor = MaterialTheme.colorScheme.primary,
+                inactiveTrackColor = MaterialTheme.colorScheme.surfaceVariant
             )
         )
         Text(
             text = "${(musicVolume.floatValue * 100).toInt()}%",
-            color = White,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.align(Alignment.End)
         )
     }

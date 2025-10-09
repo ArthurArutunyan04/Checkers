@@ -11,12 +11,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -24,23 +23,22 @@ import androidx.compose.ui.unit.sp
 import com.example.checkers.R
 import com.example.checkers.activities.MainActivity
 import com.example.checkers.ui.theme.Colus
-import com.example.checkers.ui.theme.Field
-import com.example.checkers.ui.theme.GreenDef
-import com.example.checkers.ui.theme.TopBarColor
-import com.example.checkers.ui.theme.White
-import com.example.checkers.ui.theme.LightGray
+import com.example.checkers.ui.theme.LocalLanguage
 import com.example.checkers.ui.theme.Red
 
 @Composable
 fun StatePanel() {
     val context = LocalContext.current
+    val languageState = LocalLanguage.current
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         shape = RoundedCornerShape(15.dp),
-        colors = CardDefaults.cardColors(TopBarColor)
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer
+        )
     ) {
         Column(
             modifier = Modifier
@@ -48,8 +46,8 @@ fun StatePanel() {
                 .padding(12.dp)
         ) {
             Text(
-                text = stringResource(R.string.general_statistics),
-                color = White,
+                text = languageState.getLocalizedString(context, R.string.general_statistics),
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
                 fontFamily = Colus,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
@@ -58,32 +56,32 @@ fun StatePanel() {
 
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = stringResource(R.string.games_played),
-                    color = LightGray,
+                    text = languageState.getLocalizedString(context, R.string.games_played),
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.weight(1f)
                 )
                 Text(
                     text = "1",
-                    color = White
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
 
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = stringResource(R.string.wins),
-                    color = LightGray,
+                    text = languageState.getLocalizedString(context, R.string.wins),
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.weight(1f)
                 )
                 Text(
                     text = "1",
-                    color = GreenDef
+                    color = MaterialTheme.colorScheme.tertiary
                 )
             }
 
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = stringResource(R.string.losses),
-                    color = LightGray,
+                    text = languageState.getLocalizedString(context, R.string.losses),
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.weight(1f)
                 )
                 Text(
@@ -94,19 +92,19 @@ fun StatePanel() {
 
             Row(modifier = Modifier.padding(bottom = 8.dp)) {
                 Text(
-                    text = stringResource(R.string.win_percentage),
-                    color = LightGray,
+                    text = languageState.getLocalizedString(context, R.string.win_percentage),
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.weight(1f)
                 )
                 Text(
                     text = "1",
-                    color = White
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
 
             Text(
-                text = stringResource(R.string.duel),
-                color = White,
+                text = languageState.getLocalizedString(context, R.string.duel),
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 fontFamily = Colus,
@@ -115,31 +113,31 @@ fun StatePanel() {
 
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = stringResource(R.string.duels_played),
-                    color = LightGray,
+                    text = languageState.getLocalizedString(context, R.string.duels_played),
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.weight(1f)
                 )
                 Text(
                     text = "1",
-                    color = White
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
 
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = stringResource(R.string.light_forces_wins),
-                    color = LightGray,
+                    text = languageState.getLocalizedString(context, R.string.light_forces_wins),
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.weight(1f)
                 )
                 Text(
                     text = "1",
-                    color = GreenDef
+                    color = MaterialTheme.colorScheme.tertiary
                 )
             }
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = stringResource(R.string.dark_forces_wins),
-                    color = LightGray,
+                    text = languageState.getLocalizedString(context, R.string.dark_forces_wins),
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.weight(1f)
                 )
                 Text(
@@ -148,10 +146,9 @@ fun StatePanel() {
                 )
             }
 
-
             Text(
-                text = stringResource(R.string.additional),
-                color = White,
+                text = languageState.getLocalizedString(context, R.string.additional),
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 fontFamily = Colus,
@@ -160,49 +157,49 @@ fun StatePanel() {
 
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = stringResource(R.string.win_streak),
-                    color = LightGray,
+                    text = languageState.getLocalizedString(context, R.string.win_streak),
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.weight(1f)
                 )
                 Text(
                     text = "1",
-                    color = White
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
 
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = stringResource(R.string.avg_game_time),
-                    color = LightGray,
+                    text = languageState.getLocalizedString(context, R.string.avg_game_time),
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.weight(1f)
                 )
                 Text(
                     text = "1",
-                    color = White
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
 
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = stringResource(R.string.creeps_killed),
-                    color = LightGray,
+                    text = languageState.getLocalizedString(context, R.string.creeps_killed),
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.weight(1f)
                 )
                 Text(
                     text = "1",
-                    color = White
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
 
             Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 Text(
-                    text = stringResource(R.string.mage_creeps_created),
-                    color = LightGray,
+                    text = languageState.getLocalizedString(context, R.string.mage_creeps_created),
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.weight(1f)
                 )
                 Text(
                     text = "1",
-                    color = White
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
             Button(
@@ -216,12 +213,12 @@ fun StatePanel() {
                     .padding(vertical = 4.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Field,
-                    contentColor = White
+                    containerColor = MaterialTheme.colorScheme.background,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             ) {
                 Text(
-                    text = stringResource(R.string.cancel),
+                    text = languageState.getLocalizedString(context, R.string.cancel),
                     fontSize = 16.sp,
                     fontFamily = Colus
                 )

@@ -9,11 +9,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
@@ -21,8 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.checkers.ui.theme.Colus
-import com.example.checkers.ui.theme.TopBarColor
-import com.example.checkers.ui.theme.White
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 
@@ -34,7 +32,7 @@ fun TopPanel(
 ) {
     val view = LocalView.current
     val window = (view.context as? Activity)?.window
-    val statusBarColor = TopBarColor.toArgb()
+    val statusBarColor = MaterialTheme.colorScheme.secondaryContainer.toArgb()
 
     window?.let {
         it.statusBarColor = statusBarColor
@@ -45,7 +43,7 @@ fun TopPanel(
         modifier = Modifier
             .fillMaxWidth()
             .height(75.dp)
-            .background(TopBarColor)
+            .background(MaterialTheme.colorScheme.secondaryContainer)
             .let { modifier ->
                 if (onClick != null) modifier.clickable { onClick() } else modifier
             },
@@ -53,7 +51,7 @@ fun TopPanel(
     ) {
         Text(
             text = title,
-            color = White,
+            color = MaterialTheme.colorScheme.onSecondaryContainer,
             fontSize = 40.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = Colus
@@ -63,7 +61,7 @@ fun TopPanel(
             Icon(
                 imageVector = Icons.Default.AccountCircle,
                 contentDescription = "Authorization",
-                tint = White,
+                tint = MaterialTheme.colorScheme.onSecondaryContainer,
                 modifier = Modifier
                     .size(40.dp)
                     .align(Alignment.CenterEnd)

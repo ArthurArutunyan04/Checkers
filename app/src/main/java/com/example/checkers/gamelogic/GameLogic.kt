@@ -1,7 +1,10 @@
 package com.example.checkers.gamelogic
 
 import android.content.Context
+import androidx.compose.runtime.Composable
 import com.example.checkers.R
+import com.example.checkers.ui.theme.LanguageState
+import com.example.checkers.ui.theme.LocalLanguage
 import kotlin.math.abs
 
 object GameLogic {
@@ -218,7 +221,7 @@ object GameLogic {
         return possibleMoves.distinct()
     }
 
-    fun performMove(state: GameState, fromIndex: Int, toIndex: Int): Pair<Boolean, AnimatedPiece?> {
+    fun performMove(state: GameState, fromIndex: Int, toIndex: Int, languageState: LanguageState): Pair<Boolean, AnimatedPiece?> {
         val hasCaptures = hasMandatoryCaptures(state)
         val isCapture = isValidCapture(state, fromIndex, toIndex)
         val isSimpleMove = isValidMove(state, fromIndex, toIndex)
@@ -241,15 +244,15 @@ object GameLogic {
         val toCol = toIndex % 8
 
         val pieceColor = getPieceColor(piece) ?: return false to null
-        val colorName = if (pieceColor == PlayerColor.WHITE) state.context.getString(R.string.forces_of_light) else state.context.getString(R.string.forces_of_darkness)
+        val colorName = if (pieceColor == PlayerColor.WHITE) languageState.getLocalizedString(state.context, R.string.forces_of_light) else languageState.getLocalizedString(state.context, R.string.forces_of_darkness)
 
         val fromNotation = indexToChessNotation(fromIndex)
         val toNotation = indexToChessNotation(toIndex)
 
         val moveLog = if (isCapture) {
-            state.context.getString(R.string.capture_move_format, colorName, fromNotation, toNotation)
+            languageState.getLocalizedString(state.context, R.string.capture_move_format, colorName, fromNotation, toNotation)
         } else {
-            state.context.getString(R.string.move_log_format, colorName, fromNotation, toNotation)
+            languageState.getLocalizedString(state.context, R.string.move_log_format, colorName, fromNotation, toNotation)
         }
         state.addLog(moveLog)
         println("Move logged: $moveLog")
@@ -279,7 +282,7 @@ object GameLogic {
                             if (midColor != pieceColor) {
                                 state.board.remove(currentIndex)
                                 val capturedNotation = indexToChessNotation(currentIndex)
-                                state.addLog(state.context.getString(R.string.piece_captured, capturedNotation))
+                                state.addLog(languageState.getLocalizedString(state.context, R.string.piece_captured, capturedNotation))
                                 println("Captured piece at $capturedNotation")
                                 break
                             }
@@ -293,7 +296,7 @@ object GameLogic {
                 val wasKing = piece == R.drawable.white_win || piece == R.drawable.black_win
                 if (!wasKing && ((isWhite && toRow == 0) || (!isWhite && toRow == 7))) {
                     state.board[toIndex] = if (isWhite) R.drawable.white_win else R.drawable.black_win
-                    state.addLog(state.context.getString(R.string.piece_promoted, colorName, toNotation))
+                    state.addLog(languageState.getLocalizedString(state.context, R.string.piece_promoted, colorName, toNotation))
                     println("Piece promoted at $toNotation")
                 }
 
@@ -306,37 +309,41 @@ object GameLogic {
                         println("Further captures available, keeping selectedCell at $toIndex")
                     } else {
                         state.selectedCell = null
-                        state.switchPlayer()
+                        state.switchPlayer(state.context, languageState)
                         println("No further captures, switching player")
                     }
                 } else {
                     state.selectedCell = null
-                    state.switchPlayer()
+                    state.switchPlayer(state.context, languageState)
                     println("Simple move, switching player")
                 }
 
-                checkWinCondition(state)
+                checkWinCondition(state, languageState)
             }
         )
 
         return true to animatedPiece
     }
-
-    private fun checkWinCondition(state: GameState) {
+    private fun checkWinCondition(state: GameState, languageState: LanguageState) {
         val whitePieces = state.board.values.count { getPieceColor(it) == PlayerColor.WHITE }
         val blackPieces = state.board.values.count { getPieceColor(it) == PlayerColor.BLACK }
 
         if (whitePieces == 0) {
             state.winner.value = PlayerColor.BLACK
             state.gameOver.value = true
-            state.addLog(state.context.getString(R.string.forces_of_darkness_victory))
+            state.addLog(languageState.getLocalizedString(state.context, R.string.forces_of_darkness_victory))
         } else if (blackPieces == 0) {
             state.winner.value = PlayerColor.WHITE
             state.gameOver.value = true
-            state.addLog(state.context.getString(R.string.forces_of_light_victory))
+            state.addLog(languageState.getLocalizedString(state.context, R.string.forces_of_light_victory))
         }
     }
 
+    @Composable
+    fun performMove(state: GameState, fromIndex: Int, toIndex: Int): Pair<Boolean, AnimatedPiece?> {
+        val languageState = LocalLanguage.current
+        return performMove(state, fromIndex, toIndex, languageState)
+    }
     fun aiMove(state: GameState) {
         /*TODO*/
     }

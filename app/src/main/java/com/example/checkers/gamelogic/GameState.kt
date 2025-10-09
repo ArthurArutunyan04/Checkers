@@ -1,11 +1,14 @@
 package com.example.checkers.gamelogic
 
 import android.content.Context
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import com.example.checkers.R
+import com.example.checkers.ui.theme.LanguageState
+import com.example.checkers.ui.theme.LocalLanguage
 
 data class GameState(
     val context: Context,
@@ -26,22 +29,22 @@ data class GameState(
         playerColor = playerColor
     )
 
-    fun initializeBoard() {
+    fun initializeBoard(languageState: LanguageState) {
         board.clear()
         generateStandardSetup().forEach { (index, res) ->
             board[index] = res
         }
         historyLog.clear()
-        historyLog.add(context.getString(R.string.forces_of_light_turn))
+        historyLog.add(languageState.getLocalizedString(context, R.string.forces_of_light_turn))
     }
 
-    fun switchPlayer() {
+    fun switchPlayer(context: Context, languageState: LanguageState) {
         currentPlayer = if (currentPlayer == PlayerColor.WHITE) PlayerColor.BLACK else PlayerColor.WHITE
         isAiTurn = (currentPlayer != playerColor) && (selectedDifficulty != Difficulty.DUEL)
         val turnMessage = if (currentPlayer == PlayerColor.WHITE)
-            context.getString(R.string.forces_of_light_turn)
+            languageState.getLocalizedString(context, R.string.forces_of_light_turn)
         else
-            context.getString(R.string.forces_of_darkness_turn)
+            languageState.getLocalizedString(context, R.string.forces_of_darkness_turn)
         historyLog.add(turnMessage)
     }
 
@@ -56,5 +59,11 @@ data class GameState(
         if (historyLog.size > 5) {
             historyLog.removeAt(0)
         }
+    }
+
+    @Composable
+    fun GameState.initializeBoard() {
+        val languageState = LocalLanguage.current
+        initializeBoard(languageState)
     }
 }

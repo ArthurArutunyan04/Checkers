@@ -1,6 +1,7 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -67,13 +68,13 @@ fun AnimatedButton(
                     .weight(1f)
                     .offset(x = iconOffsetX)
                     .rotate(iconAngle)
-                    .background(Field),
+                    .background(MaterialTheme.colorScheme.surface),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = icon,
                     contentDescription = text,
-                    tint = White,
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
                     modifier = Modifier.size(28.dp)
                 )
             }
@@ -84,14 +85,14 @@ fun AnimatedButton(
                     .weight(0.5f)
                     .offset(x = textOffsetX)
                     .rotate(textAngle)
-                    .background(Field),
+                    .background(MaterialTheme.colorScheme.surface),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = text,
                     fontFamily = Colus,
                     fontSize = 13.sp,
-                    color = White,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                     modifier = Modifier.rotate(-textAngle)
                 )
             }

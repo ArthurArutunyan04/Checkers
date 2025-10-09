@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -19,11 +20,7 @@ import com.example.checkers.R
 import com.example.checkers.gamelogic.AnimatedPiece
 import com.example.checkers.gamelogic.GameLogic
 import com.example.checkers.gamelogic.GameState
-import com.example.checkers.ui.theme.ButtonDefaultsColor
-import com.example.checkers.ui.theme.Field
-import com.example.checkers.ui.theme.Green
-import com.example.checkers.ui.theme.TopBarColor
-import com.example.checkers.ui.theme.White
+import com.example.checkers.ui.theme.LocalLanguage
 
 @Composable
 fun GameScreen(
@@ -37,14 +34,17 @@ fun GameScreen(
     animatedPiece: AnimatedPiece? = null,
     onAnimationEnd: () -> Unit = {}
 ) {
+    val languageState = LocalLanguage.current
+    val context = LocalContext.current
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(
                 brush = Brush.radialGradient(
                     colors = listOf(
-                        Green,
-                        Field
+                        MaterialTheme.colorScheme.tertiary,
+                        MaterialTheme.colorScheme.background
                     ),
                     radius = 800f
                 )
@@ -57,7 +57,7 @@ fun GameScreen(
         ) {
             if (showTopPanel) {
                 TopPanel(
-                    title = stringResource(R.string.difficulty_level, stringResource(gameState.selectedDifficulty.displayNameRes)),
+                    title = languageState.getLocalizedString(context, R.string.difficulty_level, stringResource(gameState.selectedDifficulty.displayNameRes)),
                     onClick = onPause
                 )
             }
@@ -86,28 +86,32 @@ fun GameScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(8.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer
+                    )
                 ) {
                     Column(
                         modifier = Modifier.padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = stringResource(R.string.game_over),
+                            text = languageState.getLocalizedString(context, R.string.game_over),
                             style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                         Text(
                             text = if (gameState.winner.value != null) {
-                                stringResource(
-                                    R.string.victory,
-                                    stringResource(gameState.winner.value?.displayNameRes ?: R.string.forces_of_light)
+                                languageState.getLocalizedString(context, R.string.victory,
+                                    languageState.getLocalizedString(context, gameState.winner.value?.displayNameRes ?: R.string.forces_of_light)
                                 )
                             } else {
-                                stringResource(R.string.draw)
+                                languageState.getLocalizedString(context, R.string.draw)
                             },
                             style = MaterialTheme.typography.bodyLarge,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                     }
                 }
@@ -128,7 +132,9 @@ fun GameScreen(
                         .width(300.dp)
                         .padding(16.dp),
                     shape = RoundedCornerShape(8.dp),
-                    colors = CardDefaults.cardColors(containerColor = TopBarColor)
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer
+                    )
                 ) {
                     Column(
                         modifier = Modifier
@@ -138,10 +144,10 @@ fun GameScreen(
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            text = stringResource(R.string.game_paused),
+                            text = languageState.getLocalizedString(context, R.string.game_paused),
                             fontWeight = FontWeight.Bold,
                             fontSize = 20.sp,
-                            color = White
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
                         )
 
                         Spacer(modifier = Modifier.height(16.dp))
@@ -150,18 +156,21 @@ fun GameScreen(
                                 gameState.paused.value = false
                                 onResume()
                             },
-                            colors = ButtonDefaults.buttonColors(containerColor = ButtonDefaultsColor)
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
                         ) {
                             Text(
-                                text = stringResource(R.string.resume_game),
-                                color = White
+                                text = languageState.getLocalizedString(context, R.string.resume_game),
+                                color = MaterialTheme.colorScheme.onSecondaryContainer
                             )
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         TextButton(onClick = onExit) {
                             Text(
-                                text = stringResource(R.string.exit_game),
-                                color = White
+                                text = languageState.getLocalizedString(context, R.string.exit_game),
+                                color = MaterialTheme.colorScheme.onSecondaryContainer
                             )
                         }
                     }

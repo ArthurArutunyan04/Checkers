@@ -211,7 +211,6 @@ fun GameBoard(
                     }
                 }
             }
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
