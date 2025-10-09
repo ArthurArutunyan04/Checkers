@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.checkers.uiСomponents.ButtonPanel
 import com.example.checkers.ui.theme.CheckersTheme
 import com.example.checkers.uiСomponents.GameBoard
@@ -29,6 +30,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        installSplashScreen()
+
         initializeAppLanguage(this)
 
         enableEdgeToEdge()
@@ -37,7 +40,7 @@ class MainActivity : ComponentActivity() {
             CheckersTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     val pieces = remember { generateInitialPieces() }
-                    MainScreen(innerPadding = innerPadding,  pieces = pieces)
+                    MainScreen(innerPadding = innerPadding, pieces = pieces)
                 }
             }
         }

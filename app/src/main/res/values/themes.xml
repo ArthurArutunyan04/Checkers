@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.SplashCustom" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:windowBackground">@color/black</item>
-        <item name="android:statusBarColor">@color/black</item>
-        <item name="android:navigationBarColor">@color/black</item>
+    <style name="Theme.SplashApp.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logoo_playstore</item>
+        <item name="postSplashScreenTheme">@style/Theme.Checkers</item>
     </style>
 
     <style name="Theme.Checkers" parent="android:Theme.Material.Light.NoActionBar" />
-
 </resources>
