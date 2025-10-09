@@ -3,51 +3,30 @@ package com.example.checkers.uiСomponents
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import android.util.Log
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Slider
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.checkers.R
 import com.example.checkers.activities.MainActivity
-import com.example.checkers.gamelogic.getCurrentLanguageDisplayName
-import com.example.checkers.gamelogic.getLocalizedString
-import com.example.checkers.gamelogic.getSavedLanguage
-import com.example.checkers.gamelogic.getSavedMusicVolume
-import com.example.checkers.gamelogic.getSavedSoundVolume
-import com.example.checkers.gamelogic.saveLanguage
-import com.example.checkers.gamelogic.saveMusicVolume
-import com.example.checkers.gamelogic.saveSoundVolume
-import com.example.checkers.gamelogic.setAppLanguage
-import com.example.checkers.ui.theme.ActiveTrackColor
-import com.example.checkers.ui.theme.Colus
-import com.example.checkers.ui.theme.Field
-import com.example.checkers.ui.theme.InactiveTrackColor
-import com.example.checkers.ui.theme.ThumbColor
-import com.example.checkers.ui.theme.TopBarColor
-import com.example.checkers.ui.theme.White
-
+import com.example.checkers.gamelogic.*
+import com.example.checkers.ui.theme.*
 
 @Composable
 fun SettingPanel() {
     val context = LocalContext.current
+    val themeMode = remember { mutableStateOf(getSavedThemeMode(context)) }
+    Log.d("SettingPanel", "Initial theme mode: ${themeMode.value}")
 
     Card(
         modifier = Modifier
@@ -59,13 +38,53 @@ fun SettingPanel() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp)
+                .padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             LanguageSwitchButton()
             SoundVolumeSlider()
             MusicVolumeSlider()
+
             Button(
                 onClick = {
+                    val newTheme = when (themeMode.value) {
+                        ThemeMode.SYSTEM -> ThemeMode.LIGHT
+                        ThemeMode.LIGHT -> ThemeMode.DARK
+                        ThemeMode.DARK -> ThemeMode.SYSTEM
+                    }
+                    Log.d("SettingPanel", "Switching to theme: $newTheme")
+                    themeMode.value = newTheme
+                    saveThemeMode(context, newTheme)
+                    (context as? Activity)?.let {
+                        Log.d("SettingPanel", "Recreating activity")
+                        it.recreate()
+                    } ?: Log.e("SettingPanel", "Context is not an Activity")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Field,
+                    contentColor = White
+                )
+            ) {
+                Text(
+                    text = "${getLocalizedString("theme_mode", context)}: ${
+                        when (themeMode.value) {
+                            ThemeMode.SYSTEM -> stringResource(R.string.system_theme)
+                            ThemeMode.LIGHT -> stringResource(R.string.light_theme)
+                            ThemeMode.DARK -> stringResource(R.string.dark_theme)
+                        }
+                    }",
+                    fontSize = 16.sp,
+                    fontFamily = Colus
+                )
+            }
+
+            Button(
+                onClick = {
+                    Log.d("SettingPanel", "Navigating to MainActivity")
                     val intent = Intent(context, MainActivity::class.java)
                     context.startActivity(intent)
                     (context as? Activity)?.finish()
@@ -97,16 +116,20 @@ fun LanguageSwitchButton() {
     Button(
         onClick = {
             val newLang = if (currentLang == "ru") "en" else "ru"
+            Log.d("SettingPanel", "Switching language to: $newLang")
             saveLanguage(context, newLang)
             setAppLanguage(context, newLang)
-            (context as? Activity)?.recreate()
+            (context as? Activity)?.let {
+                Log.d("SettingPanel", "Recreating activity for language change")
+                it.recreate()
+            } ?: Log.e("SettingPanel", "Context is not an Activity")
         },
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
             .aspectRatio(4f),
         shape = RoundedCornerShape(8.dp),
-        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+        colors = ButtonDefaults.buttonColors(
             containerColor = Field
         )
     ) {
@@ -140,7 +163,7 @@ fun SoundVolumeSlider() {
                 saveSoundVolume(context, it)
             },
             modifier = Modifier.fillMaxWidth(),
-            colors = androidx.compose.material3.SliderDefaults.colors(
+            colors = SliderDefaults.colors(
                 thumbColor = ThumbColor,
                 activeTrackColor = ActiveTrackColor,
                 inactiveTrackColor = InactiveTrackColor
@@ -177,7 +200,7 @@ fun MusicVolumeSlider() {
                 saveMusicVolume(context, it)
             },
             modifier = Modifier.fillMaxWidth(),
-            colors = androidx.compose.material3.SliderDefaults.colors(
+            colors = SliderDefaults.colors(
                 thumbColor = ThumbColor,
                 activeTrackColor = ActiveTrackColor,
                 inactiveTrackColor = InactiveTrackColor

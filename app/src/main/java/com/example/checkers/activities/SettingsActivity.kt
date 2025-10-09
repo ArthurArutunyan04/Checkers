@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.example.checkers.R
+import com.example.checkers.gamelogic.PreferencesManager
 import com.example.checkers.gamelogic.initializeAppLanguage
 import com.example.checkers.ui.theme.CheckersTheme
 import com.example.checkers.uiСomponents.ButtonPanel
@@ -32,6 +33,8 @@ class SettingsActivity : ComponentActivity() {
         initializeAppLanguage(this)
 
         enableEdgeToEdge()
+
+        val preferencesManager = PreferencesManager(this)
 
         setContent {
             CheckersTheme {

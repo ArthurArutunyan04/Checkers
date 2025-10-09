@@ -87,6 +87,10 @@
     <string name="music_volume">Громкость музыки</string>
     <string name="russian">Русский</string>
     <string name="english">English</string>
+    <string name="theme_mode">Тема</string>
+    <string name="system_theme">Системная тема</string>
+    <string name="light_theme">Светлая тема</string>
+    <string name="dark_theme">Темная тема</string>
     <string name="back">Назад</string>
 
     <!-- AuthViewModel -->

@@ -18,6 +18,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.example.checkers.gamelogic.PreferencesManager
 import com.example.checkers.uiСomponents.ButtonPanel
 import com.example.checkers.ui.theme.CheckersTheme
 import com.example.checkers.uiСomponents.GameBoard
@@ -35,6 +36,8 @@ class MainActivity : ComponentActivity() {
         initializeAppLanguage(this)
 
         enableEdgeToEdge()
+
+        val preferencesManager = PreferencesManager(this)
 
         setContent {
             CheckersTheme {
