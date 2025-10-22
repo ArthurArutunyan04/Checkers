@@ -24,6 +24,7 @@ import com.example.checkers.R
 import com.example.checkers.activities.MainActivity
 import com.example.checkers.ui.theme.Colus
 import com.example.checkers.ui.theme.LocalLanguage
+import com.example.checkers.uiComponents.TopPanel
 import com.example.checkers.viewmodel.AuthViewModel
 import kotlinx.coroutines.launch
 

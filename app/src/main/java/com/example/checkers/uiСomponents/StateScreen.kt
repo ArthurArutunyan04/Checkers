@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.example.checkers.R
 import com.example.checkers.activities.AuthActivity
 import com.example.checkers.ui.theme.LocalLanguage
+import com.example.checkers.uiComponents.TopPanel
 
 @Composable
 fun StateScreen(innerPadding: PaddingValues) {

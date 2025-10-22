@@ -21,6 +21,7 @@ import com.example.checkers.gamelogic.AnimatedPiece
 import com.example.checkers.gamelogic.GameLogic
 import com.example.checkers.gamelogic.GameState
 import com.example.checkers.ui.theme.LocalLanguage
+import com.example.checkers.uiComponents.TopPanel
 
 @Composable
 fun GameScreen(

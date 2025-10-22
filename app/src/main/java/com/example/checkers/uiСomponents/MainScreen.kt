@@ -1,6 +1,7 @@
 package com.example.checkers.uiСomponents
 
 import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.example.checkers.activities.AuthActivity
 import com.example.checkers.ui.theme.Field
 import com.example.checkers.ui.theme.Green
+import com.example.checkers.uiComponents.TopPanel
 
 @Composable
 fun MainScreen(innerPadding: PaddingValues, pieces: Map<Int, Int>) {
@@ -37,10 +39,18 @@ fun MainScreen(innerPadding: PaddingValues, pieces: Map<Int, Int>) {
             .padding(innerPadding),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        TopPanel("Checkers", onAuthClick = {
-            val intent = Intent(context, AuthActivity::class.java)
-            context.startActivity(intent)
-        })
+        TopPanel(
+            title = "Checkers",
+            onAuthClick = {
+                val intent = Intent(context, AuthActivity::class.java)
+                context.startActivity(intent)
+            },
+            onInfoClick = {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.10kor.ru/faq/igry-igrushki/pravila-igry-v-shashki/"))
+                if (intent.resolveActivity(context.packageManager) != null) {
+                    context.startActivity(intent)
+                }
+            })
         GameBoard(pieces = pieces)
         ButtonPanel()
     }

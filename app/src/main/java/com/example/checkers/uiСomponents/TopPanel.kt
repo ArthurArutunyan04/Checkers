@@ -1,4 +1,4 @@
-package com.example.checkers.uiСomponents
+package com.example.checkers.uiComponents
 
 import android.app.Activity
 import androidx.compose.foundation.background
@@ -12,6 +12,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
@@ -20,23 +21,27 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowInsetsControllerCompat
-import com.example.checkers.ui.theme.Colus
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Info
+import com.example.checkers.ui.theme.Colus
 
 @Composable
 fun TopPanel(
     title: String,
+    onInfoClick: (() -> Unit)? = null,
     onClick: (() -> Unit)? = null,
-    onAuthClick: (() -> Unit)? = null
+    onAuthClick: (() -> Unit)? = null,
 ) {
     val view = LocalView.current
     val window = (view.context as? Activity)?.window
     val statusBarColor = MaterialTheme.colorScheme.secondaryContainer.toArgb()
 
-    window?.let {
-        it.statusBarColor = statusBarColor
-        WindowInsetsControllerCompat(it, it.decorView).isAppearanceLightStatusBars = false
+    SideEffect {
+        window?.let {
+            it.statusBarColor = statusBarColor
+            WindowInsetsControllerCompat(it, it.decorView).isAppearanceLightStatusBars = false
+        }
     }
 
     Box(
@@ -56,6 +61,19 @@ fun TopPanel(
             fontWeight = FontWeight.Bold,
             fontFamily = Colus
         )
+
+        if (onInfoClick != null) {
+            Icon(
+                imageVector = Icons.Default.Info,
+                contentDescription = "Information",
+                tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                modifier = Modifier
+                    .size(40.dp)
+                    .align(Alignment.CenterStart)
+                    .padding(start = 16.dp)
+                    .clickable { onInfoClick() }
+            )
+        }
 
         if (onAuthClick != null) {
             Icon(

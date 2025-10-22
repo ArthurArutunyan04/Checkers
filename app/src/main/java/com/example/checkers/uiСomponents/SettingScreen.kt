@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.example.checkers.R
 import com.example.checkers.activities.AuthActivity
+import com.example.checkers.uiComponents.TopPanel
 
 @Composable
 fun SettingScreen(innerPadding: PaddingValues) {
