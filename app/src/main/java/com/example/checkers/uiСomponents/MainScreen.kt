@@ -2,6 +2,7 @@ package com.example.checkers.uiСomponents
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,12 +16,15 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import com.example.checkers.activities.AuthActivity
-import com.example.checkers.ui.theme.Field
-import com.example.checkers.ui.theme.Green
 import com.example.checkers.uiComponents.TopPanel
 
 @Composable
-fun MainScreen(innerPadding: PaddingValues, pieces: Map<Int, Int>) {
+fun MainScreen(
+    innerPadding: PaddingValues,
+    pieces: Map<Int, Int>,
+    activityColor: Color,
+    activityFont: String = "Checkers"
+) {
     val context = LocalContext.current
 
     Column(
@@ -40,7 +44,8 @@ fun MainScreen(innerPadding: PaddingValues, pieces: Map<Int, Int>) {
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         TopPanel(
-            title = "Checkers",
+            title = activityFont,
+            activityColor = activityColor,
             onAuthClick = {
                 val intent = Intent(context, AuthActivity::class.java)
                 context.startActivity(intent)

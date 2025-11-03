@@ -59,6 +59,7 @@
     <string name="victory">Victory %s</string>
     <string name="draw">Draw</string>
     <string name="difficulty_level">%s</string>
+    <string name="game_activity">Game</string>
 
 
     <!-- State Panel -->
@@ -116,4 +117,6 @@
     <string name="register_button">Register</string>
     <string name="logout_button">Logout</string>
     <string name="back_button">Back</string>
+    <string name="authorization">Authorization</string>
+
 </resources>

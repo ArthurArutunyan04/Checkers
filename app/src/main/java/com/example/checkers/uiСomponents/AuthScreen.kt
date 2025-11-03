@@ -16,12 +16,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.checkers.R
 import com.example.checkers.activities.MainActivity
+import com.example.checkers.ui.theme.AuthActivityColor
 import com.example.checkers.ui.theme.Colus
 import com.example.checkers.ui.theme.LocalLanguage
 import com.example.checkers.uiComponents.TopPanel
@@ -200,6 +202,9 @@ fun AuthScreen(viewModel: AuthViewModel) {
                         Button(
                             onClick = {
                                 val intent = Intent(context, MainActivity::class.java)
+                                intent.putExtra("activity_color", AuthActivityColor.toArgb())
+                                intent.putExtra("activity_name", languageState.getLocalizedString(context, R.string.authorization))
+
                                 context.startActivity(intent)
                                 (context as? Activity)?.finish()
                             },

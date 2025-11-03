@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,6 +23,8 @@ import com.example.checkers.gamelogic.*
 import com.example.checkers.ui.theme.Colus
 import com.example.checkers.ui.theme.LocalLanguage
 import com.example.checkers.ui.theme.LocalThemeMode
+import com.example.checkers.ui.theme.SettingActivityColor
+import com.example.checkers.ui.theme.StatisticActivityColor
 
 @Composable
 fun SettingPanel() {
@@ -83,8 +86,9 @@ fun SettingPanel() {
 
             Button(
                 onClick = {
-                    Log.d("SettingPanel", "Navigating to MainActivity")
                     val intent = Intent(context, MainActivity::class.java)
+                    intent.putExtra("activity_color", SettingActivityColor.toArgb())
+                    intent.putExtra("activity_name", languageState.getLocalizedString(context, R.string.settings))
                     context.startActivity(intent)
                     (context as? Activity)?.finish()
                 },

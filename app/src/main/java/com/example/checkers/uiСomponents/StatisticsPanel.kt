@@ -15,8 +15,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,6 +25,7 @@ import com.example.checkers.activities.MainActivity
 import com.example.checkers.ui.theme.Colus
 import com.example.checkers.ui.theme.LocalLanguage
 import com.example.checkers.ui.theme.Red
+import com.example.checkers.ui.theme.StatisticActivityColor
 
 @Composable
 fun StatePanel() {
@@ -205,6 +206,8 @@ fun StatePanel() {
             Button(
                 onClick = {
                     val intent = Intent(context, MainActivity::class.java)
+                    intent.putExtra("activity_color", StatisticActivityColor.toArgb())
+                    intent.putExtra("activity_name", languageState.getLocalizedString(context, R.string.statistics))
                     context.startActivity(intent)
                     (context as? Activity)?.finish()
                 },

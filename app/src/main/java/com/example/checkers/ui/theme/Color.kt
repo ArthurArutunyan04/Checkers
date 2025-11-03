@@ -40,6 +40,8 @@ val DarkBrown = Color(0xFF5C4033)
 val GridBack = Color(0xFF1E1714)
 
 
+
+
 /* Light */
 val LightField = Color(0xFFF5F5F5)
 val LightGreen = Color(0xFF8B6F47)
@@ -48,3 +50,12 @@ val LightButtonDefaultsColor = Color(0xFF9B7A4E)
 val LightBeige = Color(0xFFF0E6D2)
 val LightDarkOrange = Color(0xFFB8860B)
 val LightGridBack = Color(0xFFE8ECEF)
+
+
+val GameActivityColor = Color(0xFF7B001C)
+
+val StatisticActivityColor = Color(0xFF7E7779)
+
+val SettingActivityColor = Color(0xFF1A14A9)
+
+val AuthActivityColor = Color(0xFFACBE0D)

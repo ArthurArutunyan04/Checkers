@@ -110,7 +110,7 @@ fun CustomDifficultyDialog(onSelect: (Difficulty) -> Unit, onDismiss: () -> Unit
                         val textStyle = when (difficulty) {
                             Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD -> TextStyle(
                                 textDecoration = TextDecoration.LineThrough,
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = MaterialTheme.colorScheme.background
                             )
                             else -> TextStyle()
                         }

@@ -1,6 +1,7 @@
 package com.example.checkers.uiComponents
 
 import android.app.Activity
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -25,10 +26,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Info
 import com.example.checkers.ui.theme.Colus
+import com.example.checkers.ui.theme.White
 
 @Composable
 fun TopPanel(
-    title: String,
+    title: String = "Checkers",
+    activityColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
     onInfoClick: (() -> Unit)? = null,
     onClick: (() -> Unit)? = null,
     onAuthClick: (() -> Unit)? = null,
@@ -56,8 +59,8 @@ fun TopPanel(
     ) {
         Text(
             text = title,
-            color = MaterialTheme.colorScheme.onSecondaryContainer,
-            fontSize = 40.sp,
+            color = activityColor,
+            fontSize = 35.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = Colus
         )

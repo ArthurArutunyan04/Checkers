@@ -1,5 +1,6 @@
 package com.example.checkers.activities
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -7,13 +8,16 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import com.example.checkers.R
 import com.example.checkers.gamelogic.AnimatedPiece
 import com.example.checkers.gamelogic.Difficulty
 import com.example.checkers.gamelogic.GameLogic
 import com.example.checkers.gamelogic.GameState
 import com.example.checkers.gamelogic.PlayerColor
 import com.example.checkers.ui.theme.CheckersTheme
+import com.example.checkers.ui.theme.GameActivityColor
 import com.example.checkers.ui.theme.LanguageState
 import com.example.checkers.ui.theme.LocalLanguage
 import com.example.checkers.ui.theme.LocalThemeMode
@@ -90,7 +94,13 @@ class GameActivity : ComponentActivity() {
                                     },
                                     onPause = { gameState!!.paused.value = true },
                                     onResume = { gameState!!.paused.value = false },
-                                    onExit = { finish() },
+                                    onExit = {
+                                        val intent = Intent(this, MainActivity::class.java)
+                                        intent.putExtra("activity_color", GameActivityColor.toArgb())
+                                        intent.putExtra("activity_name", languageState.getLocalizedString(context, R.string.game_activity))
+                                        startActivity(intent)
+                                        finish()
+                                    },
                                     showTopPanel = true,
                                     animatedPiece = animatedPiece,
                                     onAnimationEnd = {
