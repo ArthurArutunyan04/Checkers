@@ -55,6 +55,7 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation(libs.androidx.foundation)
+    implementation(libs.androidx.runtime)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

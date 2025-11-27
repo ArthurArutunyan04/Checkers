@@ -1,7 +1,6 @@
 package com.example.checkers.uiСomponents
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.layout.*
@@ -24,7 +23,6 @@ import com.example.checkers.ui.theme.Colus
 import com.example.checkers.ui.theme.LocalLanguage
 import com.example.checkers.ui.theme.LocalThemeMode
 import com.example.checkers.ui.theme.SettingActivityColor
-import com.example.checkers.ui.theme.StatisticActivityColor
 
 @Composable
 fun SettingPanel() {
@@ -88,7 +86,9 @@ fun SettingPanel() {
                 onClick = {
                     val intent = Intent(context, MainActivity::class.java)
                     intent.putExtra("activity_color", SettingActivityColor.toArgb())
-                    intent.putExtra("activity_name", languageState.getLocalizedString(context, R.string.settings))
+                    intent.putExtra("activity_name",
+                        languageState.getLocalizedString(context, R.string.settings)
+                    )
                     context.startActivity(intent)
                     (context as? Activity)?.finish()
                 },

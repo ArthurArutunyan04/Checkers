@@ -26,7 +26,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Info
 import com.example.checkers.ui.theme.Colus
-import com.example.checkers.ui.theme.White
 
 @Composable
 fun TopPanel(
