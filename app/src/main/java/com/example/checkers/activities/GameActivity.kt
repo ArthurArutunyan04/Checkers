@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import com.example.checkers.AppContainer
 import com.example.checkers.R
 import com.example.checkers.gamelogic.AnimatedPiece
 import com.example.checkers.gamelogic.Difficulty
@@ -26,6 +27,7 @@ import com.example.checkers.ui.theme.ProvideThemeMode
 import com.example.checkers.uiСomponents.ColorDialog
 import com.example.checkers.uiСomponents.CustomDifficultyDialog
 import com.example.checkers.uiСomponents.GameScreen
+import com.example.checkers.viewmodel.StatisticsViewModel
 import kotlinx.coroutines.launch
 
 class GameActivity : ComponentActivity() {
@@ -46,6 +48,9 @@ class GameActivity : ComponentActivity() {
                         var animatedPiece by remember { mutableStateOf<AnimatedPiece?>(null) }
                         val coroutineScope = rememberCoroutineScope()
 
+                        val authViewModel = AppContainer.getAuthViewModel(this)
+                        val statisticsViewModel = AppContainer.getStatisticsViewModel(this)
+
                         if (showDifficultyDialog) {
                             CustomDifficultyDialog(
                                 onSelect = { difficulty ->
@@ -61,7 +66,9 @@ class GameActivity : ComponentActivity() {
                                         ).apply { initializeBoard(languageState) }
                                     }
                                 },
-                                onDismiss = { finish() }
+                                onDismiss = {
+                                    finish()
+                                }
                             )
                         } else if (showColorDialog && selectedDifficulty != null) {
                             ColorDialog(
@@ -73,28 +80,49 @@ class GameActivity : ComponentActivity() {
                                     ).apply { initializeBoard(languageState) }
                                     showColorDialog = false
                                 },
-                                onDismiss = { finish() }
+                                onDismiss = {
+                                    finish()
+                                }
                             )
                         } else if (gameState != null) {
+                            val currentGameState = gameState!!
+
                             Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                                 GameScreen(
                                     innerPadding = innerPadding,
-                                    gameState = gameState!!,
+                                    gameState = currentGameState,
                                     onCellClick = { index ->
                                         handleCellClick(
-                                            gameState!!,
+                                            currentGameState,
                                             index,
                                             languageState,
                                             { animated -> animatedPiece = animated }) {
                                             coroutineScope.launch {
                                                 kotlinx.coroutines.delay(500)
-                                                GameLogic.aiMove(gameState!!)
+                                                GameLogic.aiMove(currentGameState)
                                             }
                                         }
                                     },
-                                    onPause = { gameState!!.paused.value = true },
-                                    onResume = { gameState!!.paused.value = false },
+                                    onPause = { currentGameState.paused.value = true },
+                                    onResume = { currentGameState.paused.value = false },
                                     onExit = {
+                                        if (currentGameState.gameOver.value) {
+                                            saveGameStatistics(
+                                                authViewModel.currentUsername.value,
+                                                currentGameState,
+                                                statisticsViewModel
+                                            )
+                                        } else {
+                                            if (currentGameState.selectedDifficulty != Difficulty.DUEL) {
+                                                saveGameResult(
+                                                    authViewModel.currentUsername.value,
+                                                    currentGameState,
+                                                    statisticsViewModel,
+                                                    isWin = false
+                                                )
+                                            }
+                                        }
+
                                         val intent = Intent(this, MainActivity::class.java)
                                         intent.putExtra("activity_color", GameActivityColor.toArgb())
                                         intent.putExtra("activity_name", languageState.getLocalizedString(context, R.string.game_activity))
@@ -152,6 +180,42 @@ class GameActivity : ComponentActivity() {
             println("Selected piece at $index")
         } else {
             println("Invalid selection: pieceRes=$pieceRes, pieceColor=$pieceColor, currentPlayer=${state.currentPlayer}")
+        }
+    }
+
+    private fun saveGameStatistics(
+        username: String,
+        gameState: GameState,
+        statisticsViewModel: StatisticsViewModel
+    ) {
+        println("Saving game statistics for user: $username, difficulty: ${gameState.selectedDifficulty}, winner: ${gameState.winner.value}")
+
+        statisticsViewModel.updateStatisticsAfterGame(
+            username = username,
+            difficulty = gameState.selectedDifficulty,
+            winner = gameState.winner.value,
+            playerColor = gameState.playerColor,
+            creepsKilled = gameState.creepsKilled,
+            mageCreepsCreated = gameState.mageCreepsCreated
+        )
+    }
+
+    private fun saveGameResult(
+        username: String,
+        gameState: GameState,
+        statisticsViewModel: StatisticsViewModel,
+        isWin: Boolean
+    ) {
+        println("Saving game result for user: $username, difficulty: ${gameState.selectedDifficulty}, isWin: $isWin")
+
+        if (gameState.selectedDifficulty == Difficulty.DUEL) {
+            statisticsViewModel.incrementDuelPlayed(username)
+        } else {
+            if (!isWin) {
+                statisticsViewModel.incrementLoss(username)
+            } else {
+                statisticsViewModel.incrementWin(username)
+            }
         }
     }
 }

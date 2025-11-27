@@ -17,13 +17,17 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import com.example.checkers.activities.AuthActivity
 import com.example.checkers.uiComponents.TopPanel
+import com.example.checkers.viewmodel.AuthViewModel
+import com.example.checkers.viewmodel.StatisticsViewModel
 
 @Composable
 fun MainScreen(
     innerPadding: PaddingValues,
     pieces: Map<Int, Int>,
     activityColor: Color,
-    activityFont: String = "Checkers"
+    activityFont: String = "Checkers",
+    authViewModel: AuthViewModel,
+    statisticsViewModel: StatisticsViewModel
 ) {
     val context = LocalContext.current
 

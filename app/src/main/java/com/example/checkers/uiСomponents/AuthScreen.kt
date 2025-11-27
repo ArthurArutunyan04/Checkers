@@ -26,6 +26,7 @@ import com.example.checkers.activities.MainActivity
 import com.example.checkers.ui.theme.AuthActivityColor
 import com.example.checkers.ui.theme.Colus
 import com.example.checkers.ui.theme.LocalLanguage
+import com.example.checkers.ui.theme.SettingActivityColor
 import com.example.checkers.uiComponents.TopPanel
 import com.example.checkers.viewmodel.AuthViewModel
 import kotlinx.coroutines.launch
@@ -122,6 +123,28 @@ fun AuthScreen(viewModel: AuthViewModel) {
                                 fontFamily = Colus
                             )
                         }
+
+                        Button(
+                            onClick = {
+                                val intent = Intent(context, MainActivity::class.java)
+                                context.startActivity(intent)
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp),
+                            shape = RoundedCornerShape(8.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                        ) {
+                            Text(
+                                text = languageState.getLocalizedString(context, R.string.back),
+                                fontSize = 16.sp,
+                                fontFamily = Colus
+                            )
+                        }
+
                     } else {
                         OutlinedTextField(
                             value = authState.username,

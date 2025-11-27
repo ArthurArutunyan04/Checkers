@@ -284,6 +284,7 @@ object GameLogic {
                                 val capturedNotation = indexToChessNotation(currentIndex)
                                 state.addLog(languageState.getLocalizedString(state.context, R.string.piece_captured, capturedNotation))
                                 println("Captured piece at $capturedNotation")
+                                state.creepsKilled++
                                 break
                             }
                         }
@@ -298,6 +299,7 @@ object GameLogic {
                     state.board[toIndex] = if (isWhite) R.drawable.white_win else R.drawable.black_win
                     state.addLog(languageState.getLocalizedString(state.context, R.string.piece_promoted, colorName, toNotation))
                     println("Piece promoted at $toNotation")
+                    state.mageCreepsCreated++
                 }
 
                 if (isCapture) {
@@ -324,6 +326,7 @@ object GameLogic {
 
         return true to animatedPiece
     }
+
     private fun checkWinCondition(state: GameState, languageState: LanguageState) {
         val whitePieces = state.board.values.count { getPieceColor(it) == PlayerColor.WHITE }
         val blackPieces = state.board.values.count { getPieceColor(it) == PlayerColor.BLACK }
@@ -344,6 +347,7 @@ object GameLogic {
         val languageState = LocalLanguage.current
         return performMove(state, fromIndex, toIndex, languageState)
     }
+
     fun aiMove(state: GameState) {
         /*TODO*/
     }

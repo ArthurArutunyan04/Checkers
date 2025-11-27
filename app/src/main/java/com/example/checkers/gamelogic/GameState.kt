@@ -21,7 +21,9 @@ data class GameState(
     val gameOver: MutableState<Boolean> = mutableStateOf(false),
     val winner: MutableState<PlayerColor?> = mutableStateOf(null),
     val historyLog: MutableList<String> = mutableStateListOf(),
-    val paused: MutableState<Boolean> = mutableStateOf(false)
+    val paused: MutableState<Boolean> = mutableStateOf(false),
+    var creepsKilled: Int = 0,
+    var mageCreepsCreated: Int = 0
 ) {
     constructor(context: Context, difficulty: Difficulty, playerColor: PlayerColor) : this(
         context = context,
@@ -36,6 +38,8 @@ data class GameState(
         }
         historyLog.clear()
         historyLog.add(languageState.getLocalizedString(context, R.string.forces_of_light_turn))
+        creepsKilled = 0
+        mageCreepsCreated = 0
     }
 
     fun switchPlayer(context: Context, languageState: LanguageState) {
