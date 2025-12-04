@@ -119,4 +119,26 @@
     <string name="back_button">Back</string>
     <string name="authorization">Authorization</string>
 
+
+    <!-- User CRUD Screen -->
+    <string name="user_crud_title">Operations with users</string>
+    <string name="create_user_button">Create user</string>
+    <string name="edit_button">Edit</string>
+    <string name="delete_button">Delete</string>
+    <string name="username_field">Username</string>
+    <string name="password_field">Password</string>
+    <string name="confirm_button">Confirm</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="create_user_dialog_title">Create user</string>
+    <string name="update_user_dialog_title">Edit user</string>
+    <string name="delete_user_dialog_title">Delete user</string>
+    <string name="delete_user_confirmation">Are you sure you want to delete the user \'%1$s\'?</string>
+    <string name="user_management_button">User Management</string>
+    <string name="update_button">Update</string>
+    <string name="update_statistics_dialog_title">Update Statistics</string>
+    <string name="statistics_crud_title">Operations with Statistics</string>
+    <string name="update_field_title">Update %1$s</string>
+    <string name="current_value_text">Current value: %1$s</string>
+    <string name="new_value_label">New value</string>
+
 </resources>

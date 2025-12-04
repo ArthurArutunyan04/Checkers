@@ -27,7 +27,6 @@ class StatisticsViewModel : ViewModel() {
         viewModelScope.launch {
             var stats = database?.statisticsDao()?.getStatistics(username)
 
-            // Если статистика не найдена, создаем новую
             if (stats == null) {
                 Log.d("StatisticsViewModel", "Statistics not found for user: $username, creating new one")
                 stats = Statistics(username = username)

@@ -12,7 +12,7 @@ import com.example.checkers.R
 val Colus = FontFamily(
     Font(R.font.colus_regular)
 )
-// Set of Material typography styles to start with
+
 val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = FontFamily.Default,

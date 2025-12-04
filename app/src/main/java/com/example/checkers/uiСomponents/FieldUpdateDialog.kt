@@ -11,7 +11,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.checkers.R
+import com.example.checkers.ui.theme.LocalLanguage
 
 @Composable
 fun FieldUpdateDialog(
@@ -21,19 +24,22 @@ fun FieldUpdateDialog(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
 ) {
+    val languageState = LocalLanguage.current
+    val context = LocalContext.current
+
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Update $fieldName") },
+        title = { Text(languageState.getLocalizedString(context, R.string.update_field_title, fieldName)) },
         text = {
             Column {
                 Text(
-                    text = "Current value: $currentValue",
+                    text = languageState.getLocalizedString(context, R.string.current_value_text, currentValue),
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
                 OutlinedTextField(
                     value = currentValue,
                     onValueChange = onValueChange,
-                    label = { Text("New value") },
+                    label = { Text(languageState.getLocalizedString(context, R.string.new_value_label)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -46,7 +52,7 @@ fun FieldUpdateDialog(
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 )
             ) {
-                Text("Update")
+                Text(languageState.getLocalizedString(context, R.string.update_button))
             }
         },
         dismissButton = {
@@ -57,7 +63,7 @@ fun FieldUpdateDialog(
                     contentColor = MaterialTheme.colorScheme.onError
                 )
             ) {
-                Text("Cancel")
+                Text(languageState.getLocalizedString(context, R.string.cancel_button))
             }
         }
     )

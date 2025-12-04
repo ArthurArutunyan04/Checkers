@@ -194,7 +194,7 @@ fun StatePanel(
                     modifier = Modifier
                         .weight(1f)
                         .combinedClickable(
-                            onClick = { /* одиночное нажатие - ничего не делаем */ },
+                            onClick = {  },
                             onDoubleClick = {
                                 Log.d("StatePanel", "Double click on Duels Played, statistics: $statistics")
                                 statistics?.let { stats ->
@@ -221,7 +221,7 @@ fun StatePanel(
                     modifier = Modifier
                         .weight(1f)
                         .combinedClickable(
-                            onClick = { /* одиночное нажатие - ничего не делаем */ },
+                            onClick = {  },
                             onDoubleClick = {
                                 Log.d("StatePanel", "Double click on Light Forces Wins, statistics: $statistics")
                                 statistics?.let { stats ->
@@ -247,7 +247,7 @@ fun StatePanel(
                     modifier = Modifier
                         .weight(1f)
                         .combinedClickable(
-                            onClick = { /* одиночное нажатие - ничего не делаем */ },
+                            onClick = {},
                             onDoubleClick = {
                                 Log.d("StatePanel", "Double click on Dark Forces Wins, statistics: $statistics")
                                 statistics?.let { stats ->
@@ -283,7 +283,7 @@ fun StatePanel(
                     modifier = Modifier
                         .weight(1f)
                         .combinedClickable(
-                            onClick = { /* одиночное нажатие - ничего не делаем */ },
+                            onClick = {  },
                             onDoubleClick = {
                                 Log.d("StatePanel", "Double click on Win Streak, statistics: $statistics")
                                 statistics?.let { stats ->
@@ -310,7 +310,7 @@ fun StatePanel(
                     modifier = Modifier
                         .weight(1f)
                         .combinedClickable(
-                            onClick = { /* одиночное нажатие - ничего не делаем */ },
+                            onClick = { },
                             onDoubleClick = {
                                 Log.d("StatePanel", "Double click on Creeps Killed, statistics: $statistics")
                                 statistics?.let { stats ->
@@ -337,7 +337,7 @@ fun StatePanel(
                     modifier = Modifier
                         .weight(1f)
                         .combinedClickable(
-                            onClick = { /* одиночное нажатие - ничего не делаем */ },
+                            onClick = {  },
                             onDoubleClick = {
                                 Log.d("StatePanel", "Double click on Mage Creeps Created, statistics: $statistics")
                                 statistics?.let { stats ->

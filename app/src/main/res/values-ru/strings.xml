@@ -120,4 +120,26 @@
     <string name="logout_button">Выйти</string>
     <string name="back_button">Назад</string>
     <string name="authorization">Авторизация</string>
+
+    <!-- User CRUD Screen -->
+    <string name="user_crud_title">Операции с пользователями</string>
+    <string name="create_user_button">Создать пользователя</string>
+    <string name="edit_button">Редактировать</string>
+    <string name="delete_button">Удалить</string>
+    <string name="username_field">Имя пользователя</string>
+    <string name="password_field">Пароль</string>
+    <string name="confirm_button">Подтвердить</string>
+    <string name="cancel_button">Отмена</string>
+    <string name="create_user_dialog_title">Создать пользователя</string>
+    <string name="update_user_dialog_title">Редактировать пользователя</string>
+    <string name="delete_user_dialog_title">Удалить пользователя</string>
+    <string name="delete_user_confirmation">Вы уверены, что хотите удалить пользователя \'%1$s\'?</string>
+    <string name="user_management_button">Управление пользователями</string>
+    <string name="update_button">Обноввить</string>
+    <string name="update_statistics_dialog_title">Обновить статистику</string>
+    <string name="statistics_crud_title">Операции со статистикой</string>
+    <string name="update_field_title">Обновить %1$s</string>
+    <string name="current_value_text">Текущее значение: %1$s</string>
+    <string name="new_value_label">Новое значение</string>
+
 </resources>
