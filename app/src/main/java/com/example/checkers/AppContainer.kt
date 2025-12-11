@@ -1,6 +1,7 @@
 package com.example.checkers
 
 import android.content.Context
+import androidx.room.Room
 import com.example.checkers.database.UserDatabase
 import com.example.checkers.viewmodel.AuthViewModel
 import com.example.checkers.viewmodel.StatisticsViewModel
@@ -39,9 +40,26 @@ object AppContainer {
         return userCRUDViewModel!!
     }
 
+    fun getDatabase(context: Context): UserDatabase {
+        if (database == null) {
+            database = Room.databaseBuilder(
+                context.applicationContext,
+                UserDatabase::class.java,
+                "user_database"
+            )
+                .build()
+        }
+        return database!!
+    }
+
     private fun initializeDatabase(context: Context) {
         if (database == null) {
-            database = UserDatabase.getDatabase(context)
+            database = Room.databaseBuilder(
+                context.applicationContext,
+                UserDatabase::class.java,
+                "user_database"
+            )
+                .build()
         }
     }
 }

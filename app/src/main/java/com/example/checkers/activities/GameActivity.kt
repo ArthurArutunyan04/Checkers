@@ -10,20 +10,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.lifecycleScope
 import com.example.checkers.AppContainer
 import com.example.checkers.R
-import com.example.checkers.gamelogic.AnimatedPiece
-import com.example.checkers.gamelogic.Difficulty
-import com.example.checkers.gamelogic.GameLogic
-import com.example.checkers.gamelogic.GameState
-import com.example.checkers.gamelogic.PlayerColor
-import com.example.checkers.ui.theme.CheckersTheme
-import com.example.checkers.ui.theme.GameActivityColor
-import com.example.checkers.ui.theme.LanguageState
-import com.example.checkers.ui.theme.LocalLanguage
-import com.example.checkers.ui.theme.LocalThemeMode
-import com.example.checkers.ui.theme.ProvideLanguage
-import com.example.checkers.ui.theme.ProvideThemeMode
+import com.example.checkers.gamelogic.*
+import com.example.checkers.model.SavedGame
+import com.example.checkers.ui.theme.*
 import com.example.checkers.uiСomponents.ColorDialog
 import com.example.checkers.uiСomponents.CustomDifficultyDialog
 import com.example.checkers.uiСomponents.GameScreen
@@ -44,14 +36,90 @@ class GameActivity : ComponentActivity() {
                         var gameState by remember { mutableStateOf<GameState?>(null) }
                         var showDifficultyDialog by remember { mutableStateOf(true) }
                         var showColorDialog by remember { mutableStateOf(false) }
+                        var showRestoreDialog by remember { mutableStateOf(false) }
                         var selectedDifficulty by remember { mutableStateOf<Difficulty?>(null) }
                         var animatedPiece by remember { mutableStateOf<AnimatedPiece?>(null) }
                         val coroutineScope = rememberCoroutineScope()
 
                         val authViewModel = AppContainer.getAuthViewModel(this)
                         val statisticsViewModel = AppContainer.getStatisticsViewModel(this)
+                        val db = AppContainer.getDatabase(this)
 
-                        if (showDifficultyDialog) {
+                        LaunchedEffect(Unit) {
+                            val currentUser = authViewModel.currentUsername.value
+                            if (currentUser != null) {
+                                val savedGame = db.savedGameDao().getSavedGame(currentUser)
+                                if (savedGame != null) {
+                                    try {
+                                        val restoredState = fromJson(
+                                            json = savedGame.gameData,
+                                            context = context,
+                                            difficulty = Difficulty.valueOf(savedGame.difficulty),
+                                            playerColor = PlayerColor.valueOf(savedGame.playerColor)
+                                        )
+                                        gameState = restoredState
+                                        showRestoreDialog = true
+                                        showDifficultyDialog = false
+                                        showColorDialog = false
+                                    } catch (e: Exception) {
+                                        e.printStackTrace()
+                                        showDifficultyDialog = true
+                                    }
+                                } else {
+                                    showDifficultyDialog = true
+                                }
+                            } else {
+                                showDifficultyDialog = true
+                            }
+                        }
+
+                        if (showRestoreDialog) {
+                            androidx.compose.material3.AlertDialog(
+                                onDismissRequest = { showRestoreDialog = false },
+                                title = { androidx.compose.material3.Text(languageState.getLocalizedString(context, R.string.unfinished_game_title)) },
+                                text = { androidx.compose.material3.Text(languageState.getLocalizedString(context, R.string.unfinished_game_text)) },
+                                confirmButton = {
+                                    androidx.compose.material3.Button(
+                                        onClick = {
+                                            showRestoreDialog = false
+                                        }
+                                    ) {
+                                        androidx.compose.material3.Text(languageState.getLocalizedString(context, R.string.continue_game))
+                                    }
+                                },
+                                dismissButton = {
+                                    androidx.compose.material3.Button(
+                                        onClick = {
+                                            showRestoreDialog = false
+                                            lifecycleScope.launch {
+                                                db.savedGameDao().deleteSavedGame(authViewModel.currentUsername.value ?: "unknown")
+                                            }
+                                            if (gameState != null) {
+                                                val currentGameState = gameState!!
+                                                if (currentGameState.selectedDifficulty == Difficulty.DUEL) {
+                                                    saveGameResult(
+                                                        authViewModel.currentUsername.value,
+                                                        currentGameState,
+                                                        statisticsViewModel,
+                                                        isWin = false
+                                                    )
+                                                } else {
+                                                    saveGameResult(
+                                                        authViewModel.currentUsername.value,
+                                                        currentGameState,
+                                                        statisticsViewModel,
+                                                        isWin = false
+                                                    )
+                                                }
+                                            }
+                                            finish()
+                                        }
+                                    ) {
+                                        androidx.compose.material3.Text(languageState.getLocalizedString(context, R.string.exit_game_dialog))
+                                    }
+                                }
+                            )
+                        } else if (showDifficultyDialog) {
                             CustomDifficultyDialog(
                                 onSelect = { difficulty ->
                                     selectedDifficulty = difficulty
@@ -96,7 +164,8 @@ class GameActivity : ComponentActivity() {
                                             currentGameState,
                                             index,
                                             languageState,
-                                            { animated -> animatedPiece = animated }) {
+                                            { animated -> animatedPiece = animated }
+                                        ) {
                                             coroutineScope.launch {
                                                 kotlinx.coroutines.delay(500)
                                                 GameLogic.aiMove(currentGameState)
@@ -106,20 +175,32 @@ class GameActivity : ComponentActivity() {
                                     onPause = { currentGameState.paused.value = true },
                                     onResume = { currentGameState.paused.value = false },
                                     onExit = {
-                                        if (currentGameState.gameOver.value) {
-                                            saveGameStatistics(
-                                                authViewModel.currentUsername.value,
-                                                currentGameState,
-                                                statisticsViewModel
-                                            )
+                                        if (!currentGameState.gameOver.value) {
+                                            lifecycleScope.launch {
+                                                try {
+                                                    val json = currentGameState.toJson()
+                                                    val savedGame = SavedGame(
+                                                        username = authViewModel.currentUsername.value ?: "unknown",
+                                                        gameData = json,
+                                                        difficulty = currentGameState.selectedDifficulty.name,
+                                                        playerColor = currentGameState.playerColor.name
+                                                    )
+                                                    db.savedGameDao().saveGame(savedGame)
+                                                } catch (e: Exception) {
+                                                    e.printStackTrace()
+                                                }
+                                            }
                                         } else {
-                                            if (currentGameState.selectedDifficulty != Difficulty.DUEL) {
-                                                saveGameResult(
+                                            lifecycleScope.launch {
+                                                db.savedGameDao().deleteSavedGame(authViewModel.currentUsername.value ?: "unknown")
+                                            }
+                                            if (!currentGameState.alreadySavedToStats) {
+                                                saveGameStatistics(
                                                     authViewModel.currentUsername.value,
                                                     currentGameState,
-                                                    statisticsViewModel,
-                                                    isWin = false
+                                                    statisticsViewModel
                                                 )
+                                                currentGameState.alreadySavedToStats = true
                                             }
                                         }
 
@@ -184,37 +265,53 @@ class GameActivity : ComponentActivity() {
     }
 
     private fun saveGameStatistics(
-        username: String,
+        username: String?,
         gameState: GameState,
         statisticsViewModel: StatisticsViewModel
     ) {
         println("Saving game statistics for user: $username, difficulty: ${gameState.selectedDifficulty}, winner: ${gameState.winner.value}")
 
-        statisticsViewModel.updateStatisticsAfterGame(
-            username = username,
-            difficulty = gameState.selectedDifficulty,
-            winner = gameState.winner.value,
-            playerColor = gameState.playerColor,
-            creepsKilled = gameState.creepsKilled,
-            mageCreepsCreated = gameState.mageCreepsCreated
-        )
+        username?.let {
+            statisticsViewModel.updateStatisticsAfterGame(
+                username = it,
+                difficulty = gameState.selectedDifficulty,
+                winner = gameState.winner.value,
+                playerColor = gameState.playerColor,
+                creepsKilled = gameState.creepsKilled,
+                mageCreepsCreated = gameState.mageCreepsCreated
+            )
+        }
     }
 
     private fun saveGameResult(
-        username: String,
+        username: String?,
         gameState: GameState,
         statisticsViewModel: StatisticsViewModel,
         isWin: Boolean
     ) {
         println("Saving game result for user: $username, difficulty: ${gameState.selectedDifficulty}, isWin: $isWin")
 
-        if (gameState.selectedDifficulty == Difficulty.DUEL) {
-            statisticsViewModel.incrementDuelPlayed(username)
-        } else {
-            if (!isWin) {
-                statisticsViewModel.incrementLoss(username)
+        username?.let {
+            if (gameState.selectedDifficulty == Difficulty.DUEL) {
+                statisticsViewModel.incrementDuelPlayedWithStats(
+                    username = it,
+                    creepsKilled = gameState.creepsKilled,
+                    mageCreepsCreated = gameState.mageCreepsCreated
+                )
             } else {
-                statisticsViewModel.incrementWin(username)
+                if (!isWin) {
+                    statisticsViewModel.incrementLossWithStats(
+                        username = it,
+                        creepsKilled = gameState.creepsKilled,
+                        mageCreepsCreated = gameState.mageCreepsCreated
+                    )
+                } else {
+                    statisticsViewModel.incrementWinWithStats(
+                        username = it,
+                        creepsKilled = gameState.creepsKilled,
+                        mageCreepsCreated = gameState.mageCreepsCreated
+                    )
+                }
             }
         }
     }

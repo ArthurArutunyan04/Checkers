@@ -353,4 +353,68 @@ class StatisticsViewModel : ViewModel() {
             Log.d("StatisticsViewModel", "Final updated statistics: $updatedStats")
         }
     }
+
+    fun incrementDuelPlayedWithStats(username: String, creepsKilled: Int, mageCreepsCreated: Int) {
+        viewModelScope.launch {
+            val stats = database?.statisticsDao()?.getStatistics(username) ?: Statistics(
+                username = username,
+                duelsPlayed = 0,
+                creepsKilled = 0,
+                mageCreepsCreated = 0
+            )
+            val updatedStats = stats.copy(
+                duelsPlayed = stats.duelsPlayed + 1,
+                creepsKilled = stats.creepsKilled + creepsKilled,
+                mageCreepsCreated = stats.mageCreepsCreated + mageCreepsCreated
+            )
+            database?.statisticsDao()?.insertStatistics(updatedStats)
+            if (_userStatistics.value?.username == username) {
+                _userStatistics.value = updatedStats
+            }
+        }
+    }
+
+    fun incrementLossWithStats(username: String, creepsKilled: Int, mageCreepsCreated: Int) {
+        viewModelScope.launch {
+            val stats = database?.statisticsDao()?.getStatistics(username) ?: Statistics(
+                username = username,
+                gamesPlayed = 0,
+                losses = 0,
+                creepsKilled = 0,
+                mageCreepsCreated = 0
+            )
+            val updatedStats = stats.copy(
+                gamesPlayed = stats.gamesPlayed + 1,
+                losses = stats.losses + 1,
+                creepsKilled = stats.creepsKilled + creepsKilled,
+                mageCreepsCreated = stats.mageCreepsCreated + mageCreepsCreated
+            )
+            database?.statisticsDao()?.insertStatistics(updatedStats)
+            if (_userStatistics.value?.username == username) {
+                _userStatistics.value = updatedStats
+            }
+        }
+    }
+
+    fun incrementWinWithStats(username: String, creepsKilled: Int, mageCreepsCreated: Int) {
+        viewModelScope.launch {
+            val stats = database?.statisticsDao()?.getStatistics(username) ?: Statistics(
+                username = username,
+                gamesPlayed = 0,
+                wins = 0,
+                creepsKilled = 0,
+                mageCreepsCreated = 0
+            )
+            val updatedStats = stats.copy(
+                gamesPlayed = stats.gamesPlayed + 1,
+                wins = stats.wins + 1,
+                creepsKilled = stats.creepsKilled + creepsKilled,
+                mageCreepsCreated = stats.mageCreepsCreated + mageCreepsCreated
+            )
+            database?.statisticsDao()?.insertStatistics(updatedStats)
+            if (_userStatistics.value?.username == username) {
+                _userStatistics.value = updatedStats
+            }
+        }
+    }
 }

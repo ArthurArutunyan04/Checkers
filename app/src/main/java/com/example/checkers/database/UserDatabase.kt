@@ -12,10 +12,12 @@ import com.example.checkers.model.UserDao
 import com.example.checkers.model.StatisticsDao
 import com.example.checkers.model.CurrentUserDao
 import com.example.checkers.model.Converters
+import com.example.checkers.model.SavedGame
+import com.example.checkers.model.SavedGameDao
 
 @Database(
-    entities = [User::class, Statistics::class, CurrentUser::class],
-    version = 2,
+    entities = [User::class, Statistics::class, CurrentUser::class, SavedGame::class],
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -23,7 +25,7 @@ abstract class UserDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun statisticsDao(): StatisticsDao
     abstract fun currentUserDao(): CurrentUserDao
-
+    abstract fun savedGameDao(): SavedGameDao
     companion object {
         @Volatile
         private var INSTANCE: UserDatabase? = null

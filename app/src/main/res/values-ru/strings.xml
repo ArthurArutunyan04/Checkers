@@ -142,4 +142,9 @@
     <string name="current_value_text">Текущее значение: %1$s</string>
     <string name="new_value_label">Новое значение</string>
 
+    <string name="unfinished_game_title">Незаконченная игра</string>
+    <string name="unfinished_game_text">У вас есть незаконченная игра. Хотите продолжить?</string>
+    <string name="continue_game">Продолжить</string>
+    <string name="exit_game_dialog">Выход</string>
+
 </resources>

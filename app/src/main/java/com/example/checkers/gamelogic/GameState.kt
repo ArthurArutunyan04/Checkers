@@ -23,7 +23,8 @@ data class GameState(
     val historyLog: MutableList<String> = mutableStateListOf(),
     val paused: MutableState<Boolean> = mutableStateOf(false),
     var creepsKilled: Int = 0,
-    var mageCreepsCreated: Int = 0
+    var mageCreepsCreated: Int = 0,
+    var alreadySavedToStats: Boolean = false
 ) {
     constructor(context: Context, difficulty: Difficulty, playerColor: PlayerColor) : this(
         context = context,
@@ -40,6 +41,7 @@ data class GameState(
         historyLog.add(languageState.getLocalizedString(context, R.string.forces_of_light_turn))
         creepsKilled = 0
         mageCreepsCreated = 0
+        alreadySavedToStats = false
     }
 
     fun switchPlayer(context: Context, languageState: LanguageState) {

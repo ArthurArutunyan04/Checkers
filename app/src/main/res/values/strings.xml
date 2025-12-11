@@ -141,4 +141,9 @@
     <string name="current_value_text">Current value: %1$s</string>
     <string name="new_value_label">New value</string>
 
+    <string name="unfinished_game_title">Unfinished game</string>
+    <string name="unfinished_game_text">You have an unfinished game. Do you want to continue?</string>
+    <string name="continue_game">Continue</string>
+    <string name="exit_game_dialog">Exit</string>
+
 </resources>
